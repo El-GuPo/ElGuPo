@@ -55,20 +55,6 @@ public class MapWindow implements CameraListener {
     private PlacemarkMapObject placemarkMapObject;
     private Session searchSession;
 
-
-    public MapWindow(MainActivity mainActivity_, MapView mapView_) {
-        mainActivity = mainActivity_;
-        mapView = mapView_;
-        MapKitFactory.initialize(mainActivity_.getApplicationContext());
-
-        mapView.getMapWindow().getMap().addCameraListener(this);
-        mapView.getMapWindow().getMap().addTapListener(tapListener);
-        searchManager = SearchFactory.getInstance().createSearchManager(SearchManagerType.ONLINE);
-        mapView.getMapWindow().getMap().addInputListener(inputListener);
-        moveToStartLocation();
-        setMarkerInStartLocation();
-    }
-
     private final MapObjectTapListener mapObjectTapListener = new MapObjectTapListener() {
         @Override
         public boolean onMapObjectTap(@NonNull MapObject mapObject, @NonNull Point point) {
@@ -76,7 +62,6 @@ public class MapWindow implements CameraListener {
             return true;
         }
     };
-
     private final GeoObjectTapListener tapListener = new GeoObjectTapListener() {
         @Override
         public boolean onObjectTap(@NonNull GeoObjectTapEvent geoObjectTapEvent) {
@@ -86,7 +71,6 @@ public class MapWindow implements CameraListener {
             return false;
         }
     };
-
     private final Session.SearchListener searchListener = new Session.SearchListener() {
         @Override
         public void onSearchResponse(@NonNull Response response) {
@@ -109,7 +93,6 @@ public class MapWindow implements CameraListener {
         public void onSearchError(@NonNull Error error) {
         }
     };
-
     private final InputListener inputListener = new InputListener() {
         @Override
         public void onMapTap(@NonNull Map map, @NonNull Point point) {
@@ -121,6 +104,19 @@ public class MapWindow implements CameraListener {
 
         }
     };
+
+    public MapWindow(MainActivity mainActivity_, MapView mapView_) {
+        mainActivity = mainActivity_;
+        mapView = mapView_;
+        MapKitFactory.initialize(mainActivity_.getApplicationContext());
+
+        mapView.getMapWindow().getMap().addCameraListener(this);
+        mapView.getMapWindow().getMap().addTapListener(tapListener);
+        searchManager = SearchFactory.getInstance().createSearchManager(SearchManagerType.ONLINE);
+        mapView.getMapWindow().getMap().addInputListener(inputListener);
+        moveToStartLocation();
+        setMarkerInStartLocation();
+    }
 
     private void moveToStartLocation() {
         mapView.getMapWindow().getMap().move(
@@ -148,21 +144,20 @@ public class MapWindow implements CameraListener {
     public void onCameraPositionChanged(Map map,
                                         CameraPosition cameraPosition,
                                         CameraUpdateReason cameraUpdateReason,
-                                        boolean finished){
-        if(finished){
-            if(cameraPosition.getZoom() >= ZOOM_BOUNDARY && zoomValue <= ZOOM_BOUNDARY){
+                                        boolean finished) {
+        if (finished) {
+            if (cameraPosition.getZoom() >= ZOOM_BOUNDARY && zoomValue <= ZOOM_BOUNDARY) {
                 placemarkMapObject.setIcon(ImageProvider.fromBitmap(createBitmapFromVector(R.drawable.ic_pin_blue_svg)));
-            }
-            else if(cameraPosition.getZoom() <= ZOOM_BOUNDARY && zoomValue >= ZOOM_BOUNDARY){
+            } else if (cameraPosition.getZoom() <= ZOOM_BOUNDARY && zoomValue >= ZOOM_BOUNDARY) {
                 placemarkMapObject.setIcon(ImageProvider.fromBitmap(createBitmapFromVector(R.drawable.ic_pin_red_svg)));
             }
             zoomValue = cameraPosition.getZoom();
         }
     }
 
-    private Bitmap createBitmapFromVector(int art){
+    private Bitmap createBitmapFromVector(int art) {
         Drawable drawable = ContextCompat.getDrawable(mainActivity.getApplicationContext(), art);
-        if(drawable == null) {
+        if (drawable == null) {
             return null;
         }
         Bitmap bitmap = Bitmap.createBitmap(
@@ -170,7 +165,7 @@ public class MapWindow implements CameraListener {
                 drawable.getIntrinsicHeight(),
                 Bitmap.Config.ARGB_8888
         );
-        if(bitmap == null) {
+        if (bitmap == null) {
             return null;
         }
         Canvas canvas = new Canvas(bitmap);

@@ -34,10 +34,14 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    android{
-        buildFeatures{
-            buildConfig = true
-        }
+    dataBinding {
+        enable = true
+    }
+
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true
+        dataBinding = true
     }
 
 

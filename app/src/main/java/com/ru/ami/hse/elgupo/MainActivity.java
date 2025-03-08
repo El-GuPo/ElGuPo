@@ -1,5 +1,6 @@
 package com.ru.ami.hse.elgupo;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -14,21 +15,48 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.ru.ami.hse.elgupo.map.MapWindow;
+import com.ru.ami.hse.elgupo.databinding.ActivityMainBinding;
+import com.ru.ami.hse.elgupo.ui.HomeFragment;
+import com.ru.ami.hse.elgupo.ui.MapFragment;
+import com.ru.ami.hse.elgupo.ui.SettingsFragment;
 import com.yandex.mapkit.MapKitFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    private MapWindow mapWindow;
+    ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setApiKey(savedInstanceState);
-        MapKitFactory.initialize(this);
-        setContentView(R.layout.activity_main);
-        mapWindow = new MapWindow(this, findViewById(R.id.mapview));
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        replaceFragment(new HomeFragment());
+
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.home) {
+                replaceFragment(new HomeFragment());
+            } else if (itemId == R.id.settings) {
+                replaceFragment(new SettingsFragment());
+            } else if (itemId == R.id.map) {
+                replaceFragment(new MapFragment());
+            }
+
+            return true;
+        });
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -39,23 +67,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setApiKey(Bundle savedInstanceState) {
         boolean haveApiKey = savedInstanceState != null && savedInstanceState.getBoolean("haveApiKey") ? true : false;
-        if(!haveApiKey){
+        if (!haveApiKey) {
             MapKitFactory.setApiKey(BuildConfig.MAPKIT_API_KEY);
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mapWindow.getMapView().onStart();
-        MapKitFactory.getInstance().onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        mapWindow.getMapView().onStop();
-        MapKitFactory.getInstance().onStop();
-        super.onStop();
     }
 
 }
