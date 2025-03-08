@@ -14,9 +14,13 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "MAPKIT_API_KEY", "\"${rootProject.extra["MAPKIT_API_KEY"]}\"")
     }
 
     buildTypes {
+        debug {
+            resValue("string", "yandex_maps_key", "\"${rootProject.extra["MAPKIT_API_KEY"]}\"")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -29,6 +33,14 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
+    android{
+        buildFeatures{
+            buildConfig = true
+        }
+    }
+
+
 }
 
 dependencies {
@@ -40,4 +52,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+//    implementation("com.yandex.android:maps.mobile:4.5.0-lite")
+    implementation ("com.yandex.android:maps.mobile:4.5.0-full")
+
 }
