@@ -2,7 +2,6 @@ package com.ru.ami.hse.elgupo.map;
 
 import static com.yandex.runtime.Runtime.getApplicationContext;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -27,6 +26,7 @@ import com.yandex.mapkit.map.Map;
 import com.yandex.mapkit.map.MapObject;
 import com.yandex.mapkit.map.MapObjectCollection;
 import com.yandex.mapkit.map.MapObjectTapListener;
+import com.yandex.mapkit.map.PlacemarkCreatedCallback;
 import com.yandex.mapkit.map.PlacemarkMapObject;
 import com.yandex.mapkit.mapview.MapView;
 
@@ -42,12 +42,12 @@ import com.yandex.runtime.Error;
 import com.yandex.runtime.image.ImageProvider;
 
 public class MapWindow implements CameraListener {
-    private final Context context;
+    private final MainActivity mainActivity;
     private final MapView mapView;
     private final SearchManager searchManager;
 
 
-    private Point startLocation = new Point(59.9402, 30.315);
+    private final Point startLocation = new Point(59.9402, 30.315);
     private static final float ZOOM_BOUNDARY = 16.4F;
 
     private Float zoomValue = 16.5F;
@@ -55,22 +55,24 @@ public class MapWindow implements CameraListener {
     private PlacemarkMapObject placemarkMapObject;
     private Session searchSession;
 
-    private MainActivity mainActivity;
 
-    public MapWindow(Context context_, MapView mapView_){
-        context = context_;
+    public MapWindow(MainActivity mainActivity_, MapView mapView_) {
+        mainActivity = mainActivity_;
         mapView = mapView_;
-        searchManager = SearchFactory.getInstance().createSearchManager(SearchManagerType.ONLINE);
+        MapKitFactory.initialize(mainActivity_.getApplicationContext());
 
         mapView.getMapWindow().getMap().addCameraListener(this);
         mapView.getMapWindow().getMap().addTapListener(tapListener);
+        searchManager = SearchFactory.getInstance().createSearchManager(SearchManagerType.ONLINE);
         mapView.getMapWindow().getMap().addInputListener(inputListener);
+        moveToStartLocation();
+        setMarkerInStartLocation();
     }
 
     private final MapObjectTapListener mapObjectTapListener = new MapObjectTapListener() {
         @Override
         public boolean onMapObjectTap(@NonNull MapObject mapObject, @NonNull Point point) {
-            Toast.makeText(context.getApplicationContext(), "Эрмитаж — музей изобразительных искусств", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mainActivity.getApplicationContext(), "Эрмитаж — музей изобразительных искусств", Toast.LENGTH_SHORT).show();
             return true;
         }
     };
@@ -120,6 +122,28 @@ public class MapWindow implements CameraListener {
         }
     };
 
+    private void moveToStartLocation() {
+        mapView.getMapWindow().getMap().move(
+                new CameraPosition(startLocation, zoomValue, 0.0F, 0.0F),
+                new Animation(Animation.Type.SMOOTH, 3F),
+                null);
+    }
+
+    public void setMarkerInStartLocation() {
+        var marker = createBitmapFromVector(R.drawable.ic_pin_red_svg);
+        mapObjectCollection = mapView.getMapWindow().getMap().getMapObjects();
+        placemarkMapObject = mapObjectCollection.addPlacemark(new PlacemarkCreatedCallback() {
+            @Override
+            public void onPlacemarkCreated(@NonNull PlacemarkMapObject placemarkMapObject) {
+                placemarkMapObject.setGeometry(startLocation);
+                placemarkMapObject.setIcon(ImageProvider.fromBitmap(marker));
+
+            }
+        });
+        placemarkMapObject.setOpacity(0.5f);
+        placemarkMapObject.addTapListener(mapObjectTapListener);
+    }
+
     @Override
     public void onCameraPositionChanged(Map map,
                                         CameraPosition cameraPosition,
@@ -137,7 +161,7 @@ public class MapWindow implements CameraListener {
     }
 
     private Bitmap createBitmapFromVector(int art){
-        Drawable drawable = ContextCompat.getDrawable(context, art);
+        Drawable drawable = ContextCompat.getDrawable(mainActivity.getApplicationContext(), art);
         if(drawable == null) {
             return null;
         }
@@ -155,5 +179,7 @@ public class MapWindow implements CameraListener {
         return bitmap;
     }
 
-
+    public MapView getMapView() {
+        return mapView;
+    }
 }
