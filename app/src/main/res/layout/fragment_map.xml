@@ -5,10 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.MapFragment">
 
-    <!--    <TextView-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:text="привет!"/>-->
     <com.yandex.mapkit.mapview.MapView
         android:id="@+id/mapview"
         android:layout_width="match_parent"
