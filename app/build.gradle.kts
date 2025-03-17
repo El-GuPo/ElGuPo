@@ -53,11 +53,12 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.mediarouter)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-//    implementation("com.yandex.android:maps.mobile:4.5.0-lite")
     implementation ("com.yandex.android:maps.mobile:4.5.0-full")
+    implementation("androidx.mediarouter:mediarouter:1.7.0")
 
 }
