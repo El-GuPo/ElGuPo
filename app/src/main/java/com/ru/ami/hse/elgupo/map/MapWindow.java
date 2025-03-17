@@ -41,6 +41,8 @@ import com.yandex.mapkit.search.ToponymObjectMetadata;
 import com.yandex.runtime.Error;
 import com.yandex.runtime.image.ImageProvider;
 
+import java.util.ArrayList;
+
 public class MapWindow implements CameraListener {
     private final MainActivity mainActivity;
     private final MapView mapView;
@@ -54,14 +56,8 @@ public class MapWindow implements CameraListener {
     private MapObjectCollection mapObjectCollection;
     private PlacemarkMapObject placemarkMapObject;
     private Session searchSession;
+    private ArrayList<MapObjectTapListener> MapObjectTapListeners = new ArrayList<>();
 
-    private final MapObjectTapListener mapObjectTapListener = new MapObjectTapListener() {
-        @Override
-        public boolean onMapObjectTap(@NonNull MapObject mapObject, @NonNull Point point) {
-            Toast.makeText(mainActivity.getApplicationContext(), "Эрмитаж — музей изобразительных искусств", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-    };
     private final GeoObjectTapListener tapListener = new GeoObjectTapListener() {
         @Override
         public boolean onObjectTap(@NonNull GeoObjectTapEvent geoObjectTapEvent) {
@@ -137,7 +133,39 @@ public class MapWindow implements CameraListener {
             }
         });
         placemarkMapObject.setOpacity(0.5f);
-        placemarkMapObject.addTapListener(mapObjectTapListener);
+        MapObjectTapListener NewMapObjectTapListeners = new MapObjectTapListener() {
+            @Override
+            public boolean onMapObjectTap(@NonNull MapObject mapObject, @NonNull Point point) {
+                Toast.makeText(mainActivity.getApplicationContext(), "Эрмитаж — музей изобразительных искусств", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        };
+        MapObjectTapListeners.add(NewMapObjectTapListeners);
+        placemarkMapObject.addTapListener(MapObjectTapListeners.get(MapObjectTapListeners.size() - 1));
+    }
+
+    public void setMarkerInPoint(Point location, String text, String info) {
+        var marker = createBitmapFromVector(R.drawable.ic_pin_red_svg);
+        mapObjectCollection = mapView.getMapWindow().getMap().getMapObjects();
+        placemarkMapObject = mapObjectCollection.addPlacemark(new PlacemarkCreatedCallback() {
+            @Override
+            public void onPlacemarkCreated(@NonNull PlacemarkMapObject placemarkMapObject) {
+                placemarkMapObject.setGeometry(location);
+                placemarkMapObject.setIcon(ImageProvider.fromBitmap(marker));
+
+            }
+        });
+        placemarkMapObject.setOpacity(0.5f);
+        placemarkMapObject.setText(text);
+        MapObjectTapListener NewMapObjectTapListeners = new MapObjectTapListener() {
+            @Override
+            public boolean onMapObjectTap(@NonNull MapObject mapObject, @NonNull Point point) {
+                Toast.makeText(mainActivity.getApplicationContext(), info, Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        };
+        MapObjectTapListeners.add(NewMapObjectTapListeners);
+        placemarkMapObject.addTapListener(MapObjectTapListeners.get(MapObjectTapListeners.size() - 1));
     }
 
     @Override
