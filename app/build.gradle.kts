@@ -60,5 +60,6 @@ dependencies {
 
     implementation ("com.yandex.android:maps.mobile:4.5.0-full")
     implementation("androidx.mediarouter:mediarouter:1.7.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
 
 }
