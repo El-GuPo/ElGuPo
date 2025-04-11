@@ -61,7 +61,6 @@ dependencies {
 
     implementation ("com.yandex.android:maps.mobile:4.5.0-full")
     implementation("androidx.mediarouter:mediarouter:1.7.0")
-    implementation("com.google.android.gms:play-services-location:21.3.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
