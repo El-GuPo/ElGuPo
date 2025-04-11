@@ -1,31 +1,37 @@
 package com.ru.ami.hse.elgupo.serverrequests;
 
-import com.ru.ami.hse.elgupo.dataclasses.Place;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.SequencedCollection;
-
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import com.ru.ami.hse.elgupo.dataclasses.Place;
+import java.util.List;
 
 public class ServerRequester {
-    public static List<Place> getPlacesNearby(Double latitude, Double longitude, int count, Double radius) {
-        final List<Place>[] places = new List[]{new ArrayList<Place>()};
+
+    public interface PlacesCallback {
+        void onSuccess(List<Place> places);
+        void onError(Throwable t);
+    }
+
+    public static void getPlacesNearby(Double latitude, Double longitude, int count, Double radius, PlacesCallback callback) {
         NetworkManager
                 .getInstance()
                 .getApiService()
                 .getPlacesNearby(latitude, longitude, count, radius)
-                .enqueue(new retrofit2.Callback<List<Place>>() {
-                    public void onResponse(Call<List<Place>> call, retrofit2.Response<List<Place>> response) {
+                .enqueue(new Callback<List<Place>>() {
+                    @Override
+                    public void onResponse(Call<List<Place>> call, Response<List<Place>> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            places[0] = response.body();
+                            callback.onSuccess(response.body());
+                        } else {
+                            callback.onError(new Exception("Server error or empty response"));
                         }
                     }
 
+                    @Override
                     public void onFailure(Call<List<Place>> call, Throwable t) {
-                        t.printStackTrace();
+                        callback.onError(t);
                     }
                 });
-        return places[0];
     }
 }
