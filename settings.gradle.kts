@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "ElGupoApplication"
 include(":app")
- 
+include(":retrofitRunner")

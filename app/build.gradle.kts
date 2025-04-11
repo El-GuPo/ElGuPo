@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("io.freefair.lombok") version "8.4"
 }
 
 android {
@@ -53,11 +54,23 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.mediarouter)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-//    implementation("com.yandex.android:maps.mobile:4.5.0-lite")
     implementation ("com.yandex.android:maps.mobile:4.5.0-full")
+    implementation("androidx.mediarouter:mediarouter:1.7.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.22")
+
+    compileOnly("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
+    testCompileOnly("org.projectlombok:lombok:1.18.30")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.30")
 }
