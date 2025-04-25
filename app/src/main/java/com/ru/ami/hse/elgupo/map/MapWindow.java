@@ -71,7 +71,6 @@ public class MapWindow implements CameraListener {
     private static final float COMFORTABLE_ZOOM_LEVEL = 16.4F;
     private Float zoomValue = 16.5F;
 
-
     private MapObjectCollection mapObjectCollection;
     private PlacemarkMapObject placemarkMapObject;
     private Session searchSession;
@@ -105,7 +104,6 @@ public class MapWindow implements CameraListener {
 
     private void initializeMap(){
         setupListeners();
-        enableLocationTracking();
         initialSetup();
     }
 

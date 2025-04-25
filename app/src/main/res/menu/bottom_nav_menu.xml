@@ -5,19 +5,19 @@
 
     <item
         android:id="@+id/button_nav_menu_list"
-        android:title="List"
+        android:title="@string/List_button_name"
         android:icon="@drawable/list" />
     <item
         android:id="@+id/button_nav_menu_map"
-        android:title="Map"
+        android:title="@string/Map_button_name"
         android:icon="@drawable/map" />
     <item
-        android:id="@+id/button_nav_menu_settings"
-        android:title="Calendar"
+        android:id="@+id/button_nav_menu_calendar"
+        android:title="@string/Calendar_button_name"
         android:icon="@drawable/calendar" />
 
     <item
         android:id="@+id/button_nav_menu_user"
-        android:title="User"
+        android:title="@string/User_button_name"
         android:icon="@drawable/user"/>
 </menu>
