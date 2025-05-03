@@ -20,7 +20,10 @@ public class EventFeedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_event_feed);
+        setupNavigation();
+    }
 
+    private void setupNavigation() {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.button_nav_menu_list);
 
@@ -39,7 +42,6 @@ public class EventFeedActivity extends AppCompatActivity {
             }
             return false;
         });
-
     }
 
     private void navigateToActivity(Class<?> cls) {

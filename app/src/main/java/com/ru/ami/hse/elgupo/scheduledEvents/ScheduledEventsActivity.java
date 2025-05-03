@@ -20,7 +20,10 @@ public class ScheduledEventsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_scheduled_events);
+        setupNavigation();
+    }
 
+    private void setupNavigation() {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.button_nav_menu_calendar);
 
@@ -39,7 +42,6 @@ public class ScheduledEventsActivity extends AppCompatActivity {
             }
             return false;
         });
-
     }
 
     private void navigateToActivity(Class<?> cls) {

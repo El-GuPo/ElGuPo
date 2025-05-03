@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ru.ami.hse.elgupo.R;
@@ -31,6 +32,7 @@ public class MapActivity extends AppCompatActivity {
                             enableLocationFeatures();
                         }
                     });
+    private MapViewModel viewModel;
     private boolean permissionRequested = false;
     private BottomNavigationView bottomNavigationView;
 
@@ -39,6 +41,19 @@ public class MapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        viewModel = new ViewModelProvider(this).get(MapViewModel.class);
+
+        setupNavigation();
+        mapInitialization();
+        setupObservers();
+        checkLocationPermissions();
+    }
+
+    /*
+        Initializing
+     */
+
+    private void setupNavigation() {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.button_nav_menu_map);
 
@@ -58,14 +73,21 @@ public class MapActivity extends AppCompatActivity {
             return false;
         });
 
-        // Map Initialization
+    }
+
+    private void mapInitialization() {
         MapKitFactory.initialize(this);
         mapView = findViewById(R.id.mapview);
+        mapWindow = new MapWindow(mapView, this, viewModel);
+    }
 
 
-        mapWindow = new MapWindow(mapView, this);
-
-        checkLocationPermissions();
+    private void setupObservers() {
+        viewModel.getPlaces().observe(this, places -> {
+            if (mapWindow != null) {
+                mapWindow.updateMarkers(places);
+            }
+        });
     }
 
     /*
