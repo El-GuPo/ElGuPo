@@ -23,9 +23,6 @@ public class MapActivity extends AppCompatActivity {
 
     private MapView mapView;
     private MapWindow mapWindow;
-    private boolean permissionRequested = false;
-    private BottomNavigationView bottomNavigationView;
-
     private final ActivityResultLauncher<String[]> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
                     permissions -> {
@@ -34,6 +31,8 @@ public class MapActivity extends AppCompatActivity {
                             enableLocationFeatures();
                         }
                     });
+    private boolean permissionRequested = false;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +61,8 @@ public class MapActivity extends AppCompatActivity {
         // Map Initialization
         MapKitFactory.initialize(this);
         mapView = findViewById(R.id.mapview);
+
+
         mapWindow = new MapWindow(mapView, this);
 
         checkLocationPermissions();
@@ -69,7 +70,8 @@ public class MapActivity extends AppCompatActivity {
 
     /*
         Permission handling
-     */
+    */
+
     private void checkLocationPermissions() {
         boolean hasFineLocation = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
@@ -105,6 +107,7 @@ public class MapActivity extends AppCompatActivity {
     /*
         Lifecycle methods
      */
+
     @Override
     protected void onStart() {
         super.onStart();

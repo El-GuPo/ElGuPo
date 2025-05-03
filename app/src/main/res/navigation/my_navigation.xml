@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:id="@+id/my_navigation">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_navigation"
+    app:startDestination="@id/mainActivity">
 
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.ru.ami.hse.elgupo.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <activity
+        android:id="@+id/eventFeedActivity"
+        android:name="com.ru.ami.hse.elgupo.eventFeed.EventFeedActivity"
+        android:label="activity_event_feed"
+        tools:layout="@layout/activity_event_feed" />
+    <activity
+        android:id="@+id/mapActivity"
+        android:name="com.ru.ami.hse.elgupo.map.MapActivity"
+        android:label="activity_map"
+        tools:layout="@layout/activity_map" />
+    <activity
+        android:id="@+id/profileActivity"
+        android:name="com.ru.ami.hse.elgupo.profile.ProfileActivity"
+        android:label="activity_profile"
+        tools:layout="@layout/activity_profile" />
+    <activity
+        android:id="@+id/scheduledEventsActivity"
+        android:name="com.ru.ami.hse.elgupo.scheduledEvents.ScheduledEventsActivity"
+        android:label="activity_scheduled_events"
+        tools:layout="@layout/activity_scheduled_events" />
 </navigation>

@@ -13,9 +13,20 @@ public class Place {
     private final String name;
     private final Double latitude;
     private final Double longitude;
-    private final String adress;
+    private final String address;
     private final String logo;
     ArrayList<Event> events = new ArrayList<Event>();
+
+    // DELETE made for client test
+    public Place(Double latitude_, Double longitude_, String name_){
+        id = 0;
+        name = name_;
+        latitude = latitude_;
+        longitude = longitude_;
+        address = "ok";
+        logo = "ok";
+    }
+    // DELETE!!
 
     public Place(Map place) throws JSONException, DataFormatException {
         try {
@@ -23,7 +34,7 @@ public class Place {
             name = (String) place.get("name");
             latitude = Double.parseDouble((String) place.get("latitude"));
             longitude = Double.parseDouble((String) place.get("longitude"));
-            adress = (String) place.get("address");
+            address = (String) place.get("address");
             logo = (String) place.get("logo");
         } catch (Exception e) {
             throw new DataFormatException("wrong data");
