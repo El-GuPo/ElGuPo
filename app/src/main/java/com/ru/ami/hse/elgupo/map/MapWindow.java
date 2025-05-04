@@ -58,7 +58,6 @@ import com.yandex.runtime.image.ImageProvider;
 import com.yandex.runtime.ui_view.ViewProvider;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -81,36 +80,32 @@ public class MapWindow implements CameraListener {
     /*
         Location Manager properties
      */
-
-    private LocationManager locationManager;
-    private LocationListener locationListener;
-    private Point userLocation;
-
-    /*
-        Camera properties
-     */
-
-    private Float zoomValue = 16.5F;
-    private boolean isFirstLocationUpdate = true;
     private final Point startLocation = new Point(59.9402, 30.315);
-
-    /*
-        Object listeners
-     */
-
-    private Session searchSession;
-    private GeoObjectTapListener tapListener;
-    private Session.SearchListener searchListener;
-    private InputListener inputListener;
-    private MapObjectTapListener mapObjectTapListener;
     private final SearchManager searchManager;
     private final MapObjectCollection mapObjectCollection;
     private final java.util.Map<Place, MapObject> mapObjectDictionary;
 
     /*
+        Camera properties
+     */
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+
+    /*
+        Object listeners
+     */
+    private Point userLocation;
+    private boolean locationTrackingEnabled = false;
+    private Float zoomValue = 16.5F;
+    private Session searchSession;
+    private GeoObjectTapListener tapListener;
+    private Session.SearchListener searchListener;
+    private InputListener inputListener;
+    private MapObjectTapListener mapObjectTapListener;
+
+    /*
         popup properties
      */
-
     private View popupView;
     private ViewProvider popupProvider;
     private PlacemarkMapObject currentPopup;
@@ -211,7 +206,7 @@ public class MapWindow implements CameraListener {
                             return true;
                         }
                     }
-                } catch (Exception e){
+                } catch (Exception e) {
                     Log.e("ListenerErr", e.getMessage());
                 }
                 return true;
@@ -249,8 +244,8 @@ public class MapWindow implements CameraListener {
 
     public void updateMarkers(List<Place> places) {
         currentMapObject = null;
-        for(Place place : places){
-            if(mapObjectDictionary.containsKey(place)){
+        for (Place place : places) {
+            if (mapObjectDictionary.containsKey(place)) {
                 MapObject mapObject = mapObjectDictionary.get(place);
                 mapObjectCollection.remove(mapObject);
             }
@@ -410,7 +405,7 @@ public class MapWindow implements CameraListener {
 
     public void moveCamera(Point point) {
         map.move(
-                new CameraPosition(point, zoomValue, 0.0f, 0.0f),
+                new CameraPosition(point, COMFORTABLE_ZOOM_LEVEL, 0.0f, 0.0f),
                 new Animation(Animation.Type.SMOOTH, 3F),
                 null);
     }
@@ -425,23 +420,19 @@ public class MapWindow implements CameraListener {
         }
     }
 
-    private void moveToUserLocation() {
+    public void moveToUserLocation() {
         if (userLocation != null) {
             moveCamera(userLocation);
         }
     }
 
     private void setupLocationManager() {
+        locationTrackingEnabled = true;
         this.locationManager = MapKitFactory.getInstance().createLocationManager();
         this.locationListener = new LocationListener() {
             @Override
             public void onLocationUpdated(@NonNull Location location) {
                 userLocation = location.getPosition();
-
-                if (isFirstLocationUpdate) {
-                    moveCamera(userLocation);
-                    isFirstLocationUpdate = false;
-                }
 
                 Log.w(TAG, "Location updated: " + userLocation.getLatitude() + "," + userLocation.getLongitude());
             }
@@ -464,9 +455,9 @@ public class MapWindow implements CameraListener {
      */
 
     public void enableLocationTracking() {
-        if (checkPermission()) {
+        if (checkPermission() && !locationTrackingEnabled) {
             setupLocationManager();
-            moveToUserLocation();
+            locationTrackingEnabled = true;
         }
     }
 
@@ -496,6 +487,10 @@ public class MapWindow implements CameraListener {
     private Context getSafeContext() {
         Context context = contextRef.get();
         return context != null ? context : ElGupoApplication.getAppContext();
+    }
+
+    public boolean getLocationTrackingEnabled() {
+        return getLocationTrackingEnabled();
     }
 
 }
