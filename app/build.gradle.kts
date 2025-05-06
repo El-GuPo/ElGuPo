@@ -49,6 +49,7 @@ android {
 }
 
 dependencies {
+    val lifecycle_version = "2.8.7"
 
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -60,6 +61,7 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
 
     implementation ("com.yandex.android:maps.mobile:4.5.0-full")
+
     implementation("androidx.mediarouter:mediarouter:1.7.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -73,4 +75,13 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.30")
     testCompileOnly("org.projectlombok:lombok:1.18.30")
     testAnnotationProcessor("org.projectlombok:lombok:1.18.30")
+
+    //Navigation
+    implementation("androidx.navigation:navigation-fragment:2.7.7")
+    implementation("androidx.navigation:navigation-ui:2.7.7")
+    implementation("androidx.navigation:navigation-runtime:2.7.7")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version")
+
 }

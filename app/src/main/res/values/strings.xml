@@ -2,4 +2,8 @@
     <string name="app_name">ElGupoApplication</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="List_button_name">Feed</string>
+    <string name="Map_button_name">Map</string>
+    <string name="Calendar_button_name">My events</string>
+    <string name="User_button_name">User</string>
 </resources>
