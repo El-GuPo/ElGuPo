@@ -7,35 +7,15 @@
     android:orientation="vertical"
     android:padding="16dp" >
 
-    <EditText
-        android:id="@+id/setEmail2"
-        android:layout_width="220dp"
-        android:layout_height="59dp"
-        android:fontFamily="@font/kumbh_sans"
-        android:hint="Email"
-        android:includeFontPadding="false"
-        android:inputType="textEmailAddress"
-        android:keepScreenOn="false"
-        android:password="false"
-        android:selectAllOnFocus="false"
-        android:singleLine="false"
-        android:textAllCaps="false"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton"
-        app:layout_constraintHorizontal_bias="0.256"
-        app:layout_constraintStart_toStartOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/imageView3"
-        app:layout_constraintVertical_bias="1.0" />
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="362dp"
         android:layout_height="60dp"
-        android:layout_marginTop="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintVertical_bias="0.1"
         app:srcCompat="@drawable/search_bar" />
 
     <ImageButton
@@ -48,8 +28,12 @@
         android:background="#FFFFFF"
         android:backgroundTint="#FFFFFF"
         android:cropToPadding="false"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.968"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.083"
         app:srcCompat="@drawable/arrow_right_circle" />
 
     <TextView
@@ -93,51 +77,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="362dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.47"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:srcCompat="@drawable/search_bar" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="16dp"
-        android:adjustViewBounds="true"
-        android:background="#FFFFFF"
-        android:backgroundTint="#FFFFFF"
-        android:cropToPadding="false"
-        app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/imageView3"
-        app:srcCompat="@drawable/arrow_right_circle" />
-
-    <EditText
-        android:id="@+id/setEmail"
-        android:layout_width="220dp"
-        android:layout_height="59dp"
-        android:fontFamily="@font/kumbh_sans"
-        android:hint="Email"
-        android:includeFontPadding="false"
-        android:inputType="textEmailAddress"
-        android:keepScreenOn="false"
-        android:password="false"
-        android:selectAllOnFocus="false"
-        android:singleLine="false"
-        android:textAllCaps="false"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton"
-        app:layout_constraintHorizontal_bias="0.256"
-        app:layout_constraintStart_toStartOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/imageView3"
-        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/setPassword"

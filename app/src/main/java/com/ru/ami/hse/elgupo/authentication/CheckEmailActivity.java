@@ -1,5 +1,6 @@
 package com.ru.ami.hse.elgupo.authentication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -50,16 +51,26 @@ public class CheckEmailActivity extends AppCompatActivity {
             public void onResponse(Call<CheckEmailResponse> call, Response<CheckEmailResponse> response) {
                 if (response.isSuccessful()) {
                     if (response.body().isUserExists) {
-                        Toast.makeText(CheckEmailActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CheckEmailActivity.this, "Вход в существующий аккаунт", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(CheckEmailActivity.this, LoginActivity.class);
+                        intent.putExtra("email", email);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        finish();
                     } else {
-                        Toast.makeText(CheckEmailActivity.this, "BEBEB", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CheckEmailActivity.this, "Регистрация нового пользователя", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(CheckEmailActivity.this, RegistrationActivity.class);
+                        intent.putExtra("email", email);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        finish();
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<CheckEmailResponse> call, Throwable t) {
-                Toast.makeText(CheckEmailActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(CheckEmailActivity.this, "Ошибка: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

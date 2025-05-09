@@ -13,7 +13,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface LoginApiService {
-    @GET("register")
+    @POST("register")
     Call<RegistrationResponse> registerUser(@Body RegistrationRequest registrationRequest);
 
     @POST("check_email")

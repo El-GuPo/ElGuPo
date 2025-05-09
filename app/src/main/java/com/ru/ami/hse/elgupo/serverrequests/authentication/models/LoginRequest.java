@@ -1,8 +1,8 @@
 package com.ru.ami.hse.elgupo.serverrequests.authentication.models;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 
-@Builder
+@AllArgsConstructor
 public class LoginRequest {
 
     public String email;
