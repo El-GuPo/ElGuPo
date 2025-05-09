@@ -1,7 +1,5 @@
 package com.ru.ami.hse.elgupo.serverrequests;
 
-import com.ru.ami.hse.elgupo.dataclasses.Place;
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -12,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 public class NetworkManager {
     private static final String BASE_URL = "http://10.0.2.2:8080/";
     private static NetworkManager instance = null;
-    private final PlacesNearbyApiService apiService;
+    private final Retrofit retrofit;
 
     private NetworkManager() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -25,13 +23,12 @@ public class NetworkManager {
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .build();
 
-        Retrofit retrofit = new Retrofit.Builder()
+        retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        apiService = retrofit.create(PlacesNearbyApiService.class);
     }
 
     public static NetworkManager getInstance() {
@@ -41,8 +38,12 @@ public class NetworkManager {
         return instance;
     }
 
+    public <T> T getInstanceOfService(Class<T> type) {
+        return retrofit.create(type);
+    }
+
     public PlacesNearbyApiService getApiService() {
-        return apiService;
+        return getInstanceOfService(PlacesNearbyApiService.class);
     }
 }
 

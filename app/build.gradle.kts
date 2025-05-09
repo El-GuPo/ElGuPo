@@ -83,5 +83,5 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version")
     implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version")
-
+    implementation ("commons-validator:commons-validator:1.9.0")
 }
