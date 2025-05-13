@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
     ImageButton imageButton;
 
+    ImageView backButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +39,17 @@ public class RegistrationActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.setPassword1);
         etPasswordAgain = findViewById(R.id.setPasswordAgain);
         imageButton = findViewById(R.id.imageButton3);
+        backButton = findViewById(R.id.Back2);
 
+        backButton.setOnClickListener(v -> back());
         imageButton.setOnClickListener(v -> register());
+    }
+
+    private void back() {
+        Intent intent = new Intent(RegistrationActivity.this, CheckEmailActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        finish();
     }
 
     private void register() {
@@ -48,6 +60,7 @@ public class RegistrationActivity extends AppCompatActivity {
         }
         if (!isCorrectPassword(etPassword.getText().toString())) {
             Toast.makeText(RegistrationActivity.this, "Ненадежный пароль!", Toast.LENGTH_SHORT).show();
+            return;
         }
         String email = getIntent().getStringExtra("email");
         RegistrationRequest request = new RegistrationRequest(email, etPassword.toString(), etPassword.toString());
@@ -74,7 +87,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private boolean isCorrectPassword(String password) {
-        String regExpn = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,20}$";
+        String regExpn = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!?.,';])(?=\\S+$).{8,20}$";
 
         Pattern pattern = Pattern.compile(regExpn, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(password);

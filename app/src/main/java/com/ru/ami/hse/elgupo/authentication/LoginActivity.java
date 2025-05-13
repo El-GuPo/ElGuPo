@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
     EditText etPassword;
     ImageButton imageButton;
+    ImageView backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +32,17 @@ public class LoginActivity extends AppCompatActivity {
 
         etPassword = findViewById(R.id.setPassword);
         imageButton = findViewById(R.id.imageButton2);
+        backButton = findViewById(R.id.Back1);
 
+        backButton.setOnClickListener(v -> back());
         imageButton.setOnClickListener(v -> login());
+    }
+
+    private void back() {
+        Intent intent = new Intent(LoginActivity.this, CheckEmailActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        finish();
     }
 
     private void login() {
