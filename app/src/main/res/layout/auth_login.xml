@@ -83,7 +83,7 @@
         android:layout_width="220dp"
         android:layout_height="59dp"
         android:fontFamily="@font/kumbh_sans"
-        android:hint="Password"
+        android:hint="Пароль"
         android:includeFontPadding="false"
         android:inputType="textPassword"
         android:keepScreenOn="false"

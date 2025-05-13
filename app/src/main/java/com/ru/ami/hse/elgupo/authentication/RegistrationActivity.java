@@ -1,10 +1,13 @@
 package com.ru.ami.hse.elgupo.authentication;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,9 +43,36 @@ public class RegistrationActivity extends AppCompatActivity {
         etPasswordAgain = findViewById(R.id.setPasswordAgain);
         imageButton = findViewById(R.id.imageButton3);
         backButton = findViewById(R.id.Back2);
+        TextView tvPasswordHint = findViewById(R.id.tvPasswordHint);
 
         backButton.setOnClickListener(v -> back());
         imageButton.setOnClickListener(v -> register());
+        tvPasswordHint.setOnClickListener(v -> showPasswordRequirementsDialog());
+    }
+
+    private void showPasswordRequirementsDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Требования к паролю");
+
+        String message = "Такой пароль считается надежным:\n\n" +
+                "• Минимум 8 символов\n" +
+                "• Максимум 20 символов\n" +
+                "• Хотя бы одна заглавная буква (A-Z)\n" +
+                "• Хотя бы одна строчная буква (a-z)\n" +
+                "• Хотя бы одна цифра (0-9)\n" +
+                "• Специальный символ (@#$%^&+=!?)\n";
+
+        builder.setMessage(message);
+
+        builder.setPositiveButton("Понятно", (dialog, which) -> dialog.dismiss());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        TextView messageView = dialog.findViewById(android.R.id.message);
+        if (messageView != null) {
+            messageView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        }
     }
 
     private void back() {
@@ -87,7 +117,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private boolean isCorrectPassword(String password) {
-        String regExpn = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!?.,';])(?=\\S+$).{8,20}$";
+        String regExpn = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!?])(?=\\S+$).{8,20}$";
 
         Pattern pattern = Pattern.compile(regExpn, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(password);

@@ -23,7 +23,7 @@
         android:layout_width="220dp"
         android:layout_height="59dp"
         android:fontFamily="@font/kumbh_sans"
-        android:hint="Again"
+        android:hint="Снова"
         android:includeFontPadding="false"
         android:inputType="textPassword"
         android:keepScreenOn="false"
@@ -111,7 +111,7 @@
         android:layout_width="220dp"
         android:layout_height="59dp"
         android:fontFamily="@font/kumbh_sans"
-        android:hint="Password"
+        android:hint="Пароль"
         android:includeFontPadding="false"
         android:inputType="textPassword"
         android:keepScreenOn="false"
@@ -130,12 +130,12 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="304dp"
+        android:layout_marginBottom="468dp"
         android:fontFamily="sans-serif-medium"
         android:text="Надежный пароль:"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.704"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -159,10 +159,10 @@
         android:text="Содержит строчные и заглавные латинские буквы"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.914"
+        app:layout_constraintHorizontal_bias="0.745"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.169" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView8"
@@ -173,10 +173,10 @@
         android:text="Содержит как минимум одну цифру"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.924"
+        app:layout_constraintHorizontal_bias="0.08"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.31" />
+        app:layout_constraintVertical_bias="0.158" />
 
     <TextView
         android:id="@+id/textView9"
@@ -187,10 +187,10 @@
         android:text="Содержит как минимум один специальный знак"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.891"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.584" />
+        app:layout_constraintVertical_bias="0.215" />
 
     <ImageView
         android:id="@+id/Back2"
@@ -203,5 +203,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/arrow_left_circle" />
+
+    <TextView
+        android:id="@+id/tvPasswordHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="Что такое надежный пароль?"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
