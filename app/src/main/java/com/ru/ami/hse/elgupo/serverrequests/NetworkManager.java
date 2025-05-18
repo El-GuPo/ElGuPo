@@ -9,15 +9,15 @@ public class NetworkManager {
 
     private static final String BASE_URL = "http://localhost:8080/";
     private static NetworkManager instance = null;
-    private final PlacesNearbyApiService apiService;
+
+    private final Retrofit retrofit;
 
     private NetworkManager() {
-        Retrofit retrofit = new Retrofit.Builder()
+        retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        apiService = retrofit.create(PlacesNearbyApiService.class);
     }
 
 
@@ -28,7 +28,7 @@ public class NetworkManager {
         return instance;
     }
 
-    public PlacesNearbyApiService getApiService() {
-        return apiService;
+    public <T> T getInstanceOfService(Class<T> type) {
+        return retrofit.create(type);
     }
 }
