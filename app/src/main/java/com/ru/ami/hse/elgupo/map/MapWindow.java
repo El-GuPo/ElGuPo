@@ -17,6 +17,8 @@ import android.Manifest;
 import com.ru.ami.hse.elgupo.ElGupoApplication;
 import com.ru.ami.hse.elgupo.MainActivity;
 import com.ru.ami.hse.elgupo.R;
+import com.ru.ami.hse.elgupo.dataclasses.Place;
+import com.ru.ami.hse.elgupo.serverrequests.ServerRequester;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
@@ -52,7 +54,9 @@ import com.yandex.runtime.Error;
 import com.yandex.runtime.image.ImageProvider;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public class MapWindow implements CameraListener {
@@ -189,7 +193,28 @@ public class MapWindow implements CameraListener {
 
     private void initialSetup(){
         moveToStartLocation();
-        setMarkerInStartLocation();
+        setMarkersInEvents();
+    }
+
+    private void setMarkersInEvents() {
+        List<Place> events = new ArrayList<>();
+        ServerRequester.getPlacesNearby(55.75, 37.61, 10, 5000000.0, new ServerRequester.PlacesCallback() {
+            @Override
+            public void onSuccess(List<Place> places) {
+                events.addAll(places);
+                Log.w("Events size", "Size: " + events.size());
+
+                for (Place event : events) {
+                    setMarkerInPoint(new Point(event.getLatitude(), event.getLongitude()), event.getAdress(), event.getName());
+                }
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                Log.e("Network Error", "Request failed: " + t.getMessage());
+                t.printStackTrace();
+            }
+        });
     }
 
     private void moveToStartLocation() {
@@ -226,6 +251,9 @@ public class MapWindow implements CameraListener {
 
     public void setMarkerInPoint(Point location, String text, String info) {
         var marker = createBitmapFromVector(R.drawable.ic_pin_red_svg);
+        if(marker == null){
+            Log.e("MapWindow", "Null marker in MapWindow method");
+        }
         mapObjectCollection = map.getMapObjects();
         placemarkMapObject = mapObjectCollection.addPlacemark(new PlacemarkCreatedCallback() {
             @Override
@@ -237,8 +265,8 @@ public class MapWindow implements CameraListener {
         });
         placemarkMapObject.setOpacity(0.5f);
         placemarkMapObject.setText(text);
-        placemarkMapObject.addTapListener(mapObjectTapListener);
-        placemarkMapObjects.put(placemarkMapObject, info);
+//        placemarkMapObject.addTapListener(mapObjectTapListener);
+//        placemarkMapObjects.put(placemarkMapObject, info);
 
     }
 
