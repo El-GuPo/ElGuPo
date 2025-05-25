@@ -5,15 +5,19 @@ import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ru.ami.hse.elgupo.R;
 import com.ru.ami.hse.elgupo.eventFeed.EventFeedActivity;
 import com.ru.ami.hse.elgupo.map.MapActivity;
+import com.ru.ami.hse.elgupo.map.MapViewModel;
+import com.ru.ami.hse.elgupo.profile.photo.PhotoViewModel;
 import com.ru.ami.hse.elgupo.scheduledEvents.ScheduledEventsActivity;
 
 public class ProfileActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
+    private PhotoViewModel photoViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +25,8 @@ public class ProfileActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_profile);
         setupNavigation();
+        photoViewModel = new ViewModelProvider(this).get(PhotoViewModel.class);
+        photoViewModel.getPhotoUrl(1000L);
     }
 
     private void setupNavigation() {
