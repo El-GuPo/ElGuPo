@@ -1,4 +1,4 @@
-package com.ru.ami.hse.elgupo.serverrequests;
+package com.ru.ami.hse.elgupo.serverrequests.events;
 
 import com.ru.ami.hse.elgupo.dataclasses.Place;
 

@@ -1,11 +1,9 @@
 package com.ru.ami.hse.elgupo;
 
 import com.ru.ami.hse.elgupo.dataclasses.Place;
-import com.ru.ami.hse.elgupo.serverrequests.ServerRequester;
+import com.ru.ami.hse.elgupo.serverrequests.events.ServerRequester;
 import org.junit.Test;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 public class ExampleUnitTest {
     @Test

@@ -1,4 +1,4 @@
-package com.ru.ami.hse.elgupo.serverrequests;
+package com.ru.ami.hse.elgupo.serverrequests.events;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -7,6 +7,7 @@ import retrofit2.Response;
 import com.ru.ami.hse.elgupo.dataclasses.Category;
 import com.ru.ami.hse.elgupo.dataclasses.Event;
 import com.ru.ami.hse.elgupo.dataclasses.Place;
+import com.ru.ami.hse.elgupo.serverrequests.NetworkManager;
 
 import java.util.HashMap;
 import java.util.List;

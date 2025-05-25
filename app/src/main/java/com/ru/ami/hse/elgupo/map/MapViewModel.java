@@ -4,7 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.ru.ami.hse.elgupo.dataclasses.Place;
-import com.ru.ami.hse.elgupo.serverrequests.ServerRequester;
+import com.ru.ami.hse.elgupo.serverrequests.events.ServerRequester;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
