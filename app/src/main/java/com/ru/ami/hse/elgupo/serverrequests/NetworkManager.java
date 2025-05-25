@@ -1,7 +1,5 @@
 package com.ru.ami.hse.elgupo.serverrequests;
 
-import com.ru.ami.hse.elgupo.dataclasses.Place;
-
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;

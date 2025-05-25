@@ -32,7 +32,16 @@
             android:name=".map.MapActivity"
             android:exported="false" />
         <activity
+            android:name=".authentication.RegistrationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".authentication.LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".authentication.CheckEmailActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,6 +49,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
