@@ -16,7 +16,7 @@ public class ServerRequester {
     public static void getPlacesNearby(Double latitude, Double longitude, int count, Double radius, PlacesCallback callback) {
         NetworkManager
                 .getInstance()
-                .getApiService()
+                .getInstanceOfService(PlacesNearbyApiService.class)
                 .getPlacesNearby(latitude, longitude, count, radius)
                 .enqueue(new Callback<List<Place>>() {
                     @Override
