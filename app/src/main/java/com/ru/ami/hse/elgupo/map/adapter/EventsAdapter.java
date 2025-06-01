@@ -41,7 +41,11 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
 
         holder.title.setText(event.getName());
 
-        holder.time.setText(DateUtils.convertTimestampToTime(event.getDateStart()));
+        StringBuilder sb = new StringBuilder("Даты: ");
+        sb.append(DateUtils.convertTimestampToDate(event.getDateStart()));
+        sb.append(" - ");
+        sb.append(DateUtils.convertTimestampToDate(event.getDateEnd()));
+        holder.time.setText(sb.toString());
 
         if (event.getLogo() != null && !event.getLogo().isEmpty()) {
             Glide.with(context)
