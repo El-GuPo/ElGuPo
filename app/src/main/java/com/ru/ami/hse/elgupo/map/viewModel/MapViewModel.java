@@ -1,9 +1,11 @@
-package com.ru.ami.hse.elgupo.map;
+package com.ru.ami.hse.elgupo.map.viewModel;
 
 import android.app.Application;
 import android.util.Log;
 
 import com.ru.ami.hse.elgupo.dataclasses.Place;
+import com.ru.ami.hse.elgupo.map.repository.PlacesRepository;
+import com.ru.ami.hse.elgupo.map.repository.PlacesRepositoryImpl;
 import com.ru.ami.hse.elgupo.serverrequests.events.ServerRequester;
 
 import androidx.annotation.NonNull;
@@ -14,17 +16,18 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.List;
 
 public class MapViewModel extends AndroidViewModel {
+    private final PlacesRepository repository;
     private MutableLiveData<List<Place>> places = new MutableLiveData<>();
 
-    public MapViewModel(@NonNull Application application) {
+    public MapViewModel(
+            @NonNull Application application
+    ) {
         super(application);
+        this.repository = new PlacesRepositoryImpl();
     }
 
-    /*
-        Главное положить в places то, что хочется с необходимым интервалом, дальше, оно все само обработается
-     */
     public void loadPlaces(double lat, double lon, double radius) {
-        ServerRequester.getPlacesNearby(lat, lon, 10, radius, new ServerRequester.PlacesCallback() {
+        repository.loadPlaces(lat, lon, 20, radius, new PlacesRepository.PlacesCallback() {
             @Override
             public void onSuccess(List<Place> placesList) {
                 places.postValue(placesList);
@@ -38,5 +41,7 @@ public class MapViewModel extends AndroidViewModel {
         });
     }
 
-    public LiveData<List<Place>> getPlaces() { return places; }
+    public LiveData<List<Place>> getPlaces() {
+        return places;
+    }
 }

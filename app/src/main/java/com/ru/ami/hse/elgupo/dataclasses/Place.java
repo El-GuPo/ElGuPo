@@ -1,11 +1,12 @@
 package com.ru.ami.hse.elgupo.dataclasses;
 
-import lombok.Getter;
 import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.zip.DataFormatException;
+
+import lombok.Getter;
 
 @Getter
 public class Place {
@@ -16,17 +17,6 @@ public class Place {
     private final String address;
     private final String logo;
     ArrayList<Event> events = new ArrayList<Event>();
-
-    // DELETE made for client test
-    public Place(Double latitude_, Double longitude_, String name_){
-        id = 0;
-        name = name_;
-        latitude = latitude_;
-        longitude = longitude_;
-        address = "ok";
-        logo = "ok";
-    }
-    // DELETE!!
 
     public Place(Map place) throws JSONException, DataFormatException {
         try {

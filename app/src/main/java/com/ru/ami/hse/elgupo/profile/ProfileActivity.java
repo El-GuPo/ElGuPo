@@ -11,7 +11,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ru.ami.hse.elgupo.R;
 import com.ru.ami.hse.elgupo.eventFeed.EventFeedActivity;
 import com.ru.ami.hse.elgupo.map.MapActivity;
-import com.ru.ami.hse.elgupo.map.MapViewModel;
 import com.ru.ami.hse.elgupo.profile.photo.PhotoViewModel;
 import com.ru.ami.hse.elgupo.scheduledEvents.ScheduledEventsActivity;
 
