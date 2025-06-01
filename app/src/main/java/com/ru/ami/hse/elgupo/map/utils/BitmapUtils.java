@@ -1,4 +1,4 @@
-package com.ru.ami.hse.elgupo.map;
+package com.ru.ami.hse.elgupo.map.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;

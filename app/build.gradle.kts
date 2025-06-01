@@ -81,10 +81,19 @@ dependencies {
     testCompileOnly("org.projectlombok:lombok:1.18.30")
     testAnnotationProcessor("org.projectlombok:lombok:1.18.30")
 
+    implementation ("androidx.recyclerview:recyclerview:1.4.0")
+    implementation ("androidx.recyclerview:recyclerview-selection:1.2.0")
+    implementation ("androidx.cardview:cardview:1.0.0")
+
+    implementation ("com.github.bumptech.glide:glide:4.14.2")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
+
+
     //Navigation
     implementation("androidx.navigation:navigation-fragment:2.7.7")
     implementation("androidx.navigation:navigation-ui:2.7.7")
     implementation("androidx.navigation:navigation-runtime:2.7.7")
+
 
     implementation("androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version")
     implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version")

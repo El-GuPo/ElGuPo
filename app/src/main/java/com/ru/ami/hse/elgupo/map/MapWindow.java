@@ -6,9 +6,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +14,9 @@ import androidx.core.content.ContextCompat;
 import com.ru.ami.hse.elgupo.ElGupoApplication;
 import com.ru.ami.hse.elgupo.R;
 import com.ru.ami.hse.elgupo.dataclasses.Place;
+import com.ru.ami.hse.elgupo.map.dialog.PlaceInfoDialog;
+import com.ru.ami.hse.elgupo.map.utils.BitmapUtils;
+import com.ru.ami.hse.elgupo.map.viewModel.MapViewModel;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
@@ -55,7 +55,6 @@ import com.yandex.mapkit.search.Session;
 import com.yandex.mapkit.search.ToponymObjectMetadata;
 import com.yandex.runtime.Error;
 import com.yandex.runtime.image.ImageProvider;
-import com.yandex.runtime.ui_view.ViewProvider;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -104,15 +103,11 @@ public class MapWindow implements CameraListener {
     private MapObjectTapListener mapObjectTapListener;
 
     /*
-        popup properties
+        popup property
      */
-    private View popupView;
-    private ViewProvider popupProvider;
-    private PlacemarkMapObject currentPopup;
-    private MapObject currentMapObject;
+    private PlaceInfoDialog currentDialog;
 
-
-    public MapWindow(MapView mapView_, Context context_, MapViewModel viewModel_) {
+    public MapWindow(MapView mapView_, Context context_, MapViewModel viewModel_, MapActivity mapActivity) {
         contextRef = new WeakReference<>(context_);
         mapView = mapView_;
         map = mapView.getMapWindow().getMap();
@@ -130,7 +125,6 @@ public class MapWindow implements CameraListener {
      */
 
     private void initializeMap() {
-        initPopup();
         setupListeners();
         initialRequest();
     }
@@ -177,7 +171,6 @@ public class MapWindow implements CameraListener {
         this.inputListener = new InputListener() {
             @Override
             public void onMapTap(@NonNull Map map, @NonNull Point point) {
-                hidePlaceInfo();
                 map.deselectGeoObject();
                 searchSession = searchManager.submit(point, 20, new SearchOptions(), searchListener);
             }
@@ -194,20 +187,15 @@ public class MapWindow implements CameraListener {
 
                         PlacemarkMapObject placemark = (PlacemarkMapObject) mapObject;
 
-                        if (POPUP_USER_DATA.equals(placemark.getUserData()) || mapObject.equals(currentMapObject)) {
-                            return true;
-                        }
-
                         Object data = placemark.getUserData();
                         if (data instanceof Place) {
                             Place place = (Place) data;
-                            currentMapObject = mapObject;
-                            showPlaceInfo(place, new Point(place.getLatitude(), place.getLongitude()));
+                            showPlaceInfo(place);
                             return true;
                         }
                     }
                 } catch (Exception e) {
-                    Log.e("ListenerErr", e.getMessage());
+                    Log.e("Listener error", e.getMessage());
                 }
                 return true;
             }
@@ -215,15 +203,6 @@ public class MapWindow implements CameraListener {
         map.addTapListener(tapListener);
         map.addInputListener(inputListener);
 
-        // DELETE, SAMPLES!!!
-        Point testLocation1 = new Point(60.9402, 30.315);
-        Place testPlace1 = new Place(60.9402, 30.315, "Gosha");
-        Point testLocation2 = new Point(59.9402, 30.815);
-        Place testPlace2 = new Place(59.9402, 30.815, "George");
-
-        setMarkerInPoint(testLocation1, testPlace1);
-        setMarkerInPoint(testLocation2, testPlace2);
-        // DELETE, SAMPLES
     }
 
     private void initialRequest() {
@@ -243,7 +222,6 @@ public class MapWindow implements CameraListener {
      */
 
     public void updateMarkers(List<Place> places) {
-        currentMapObject = null;
         for (Place place : places) {
             if (mapObjectDictionary.containsKey(place)) {
                 MapObject mapObject = mapObjectDictionary.get(place);
@@ -281,53 +259,14 @@ public class MapWindow implements CameraListener {
     /*
         UI functions for popups
      */
-    private void initPopup() {
-        popupView = LayoutInflater.from(getSafeContext()).inflate(R.layout.popup_layout, null);
 
-        popupProvider = new ViewProvider(popupView, true);
-
-        currentPopup = mapObjectCollection.addPlacemark(new PlacemarkCreatedCallback() {
-            @Override
-            public void onPlacemarkCreated(@NonNull PlacemarkMapObject placemarkMapObject) {
-                placemarkMapObject.setView(popupProvider);
-                placemarkMapObject.setVisible(false);
-                placemarkMapObject.setZIndex(1000);
-            }
-        });
-    }
-
-    private void showPlaceInfo(Place place, Point location) {
-        if (currentPopup != null) {
-            currentPopup.getParent().remove(currentPopup);
-            currentPopup = null;
-        }
-
-        View popupView = LayoutInflater.from(getSafeContext()).inflate(R.layout.popup_layout, null);
-
-        TextView title = popupView.findViewById(R.id.popup_title);
-        TextView address = popupView.findViewById(R.id.popup_address);
-        title.setText(place.getName());
-        address.setText(place.getAddress());
-
-        ViewProvider provider = new ViewProvider(popupView, false);
-
-        currentPopup = mapObjectCollection.addPlacemark(new PlacemarkCreatedCallback() {
-            @Override
-            public void onPlacemarkCreated(@NonNull PlacemarkMapObject placemarkMapObject) {
-                placemarkMapObject.setGeometry(new Point(location.getLatitude(), location.getLongitude()));
-                placemarkMapObject.setView(provider);
-                placemarkMapObject.setUserData(POPUP_USER_DATA);
-            }
-        });
-
-        currentPopup.setZIndex(1000);
-    }
-
-    private void hidePlaceInfo() {
-        if (currentPopup != null) {
-            currentPopup.getParent().remove(currentPopup);
-            currentPopup = null;
-            currentMapObject = null;
+    private void showPlaceInfo(Place place) {
+        try {
+            PlaceInfoDialog dialog = new PlaceInfoDialog(contextRef.get(), place);
+            currentDialog = dialog;
+            dialog.show();
+        } catch (Exception e) {
+            Log.e("Map dialog error", e.getMessage());
         }
     }
 
@@ -491,6 +430,10 @@ public class MapWindow implements CameraListener {
 
     public boolean getLocationTrackingEnabled() {
         return getLocationTrackingEnabled();
+    }
+
+    public PlaceInfoDialog getCurrentDialog() {
+        return currentDialog;
     }
 
 }

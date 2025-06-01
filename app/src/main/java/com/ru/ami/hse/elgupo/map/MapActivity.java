@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ru.ami.hse.elgupo.R;
 import com.ru.ami.hse.elgupo.eventFeed.EventFeedActivity;
+import com.ru.ami.hse.elgupo.map.viewModel.MapViewModel;
 import com.ru.ami.hse.elgupo.profile.ProfileActivity;
 import com.ru.ami.hse.elgupo.scheduledEvents.ScheduledEventsActivity;
 import com.yandex.mapkit.MapKitFactory;
@@ -96,7 +97,7 @@ public class MapActivity extends AppCompatActivity {
     private void mapInitialization() {
         MapKitFactory.initialize(this);
         mapView = findViewById(R.id.mapview);
-        mapWindow = new MapWindow(mapView, this, viewModel);
+        mapWindow = new MapWindow(mapView, this, viewModel, this);
     }
 
 
@@ -104,7 +105,11 @@ public class MapActivity extends AppCompatActivity {
         viewModel.getPlaces().observe(this, places -> {
             if (mapWindow != null) {
                 mapWindow.updateMarkers(places);
+                if (mapWindow.getCurrentDialog() != null && mapWindow.getCurrentDialog().isShowing()) {
+                    mapWindow.getCurrentDialog().updateEvents();
+                }
             }
+
         });
     }
 

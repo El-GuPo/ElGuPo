@@ -1,14 +1,14 @@
 package com.ru.ami.hse.elgupo.dataclasses;
 
-import lombok.Getter;
-import org.json.JSONObject;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.zip.DataFormatException;
 
+import lombok.Getter;
+
 @Getter
-public class Event {
+public class Event implements Serializable {
     private final Integer id;
     private final String name;
     private final String logo;
