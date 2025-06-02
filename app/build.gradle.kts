@@ -88,6 +88,7 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.14.2")
     annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
 
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
 
     //Navigation
     implementation("androidx.navigation:navigation-fragment:2.7.7")

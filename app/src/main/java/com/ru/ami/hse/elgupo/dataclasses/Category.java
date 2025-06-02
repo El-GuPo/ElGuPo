@@ -2,11 +2,12 @@ package com.ru.ami.hse.elgupo.dataclasses;
 
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
 @Getter
-public class Category {
+public class Category implements Serializable {
     private final String title;
     private final Integer id;
 

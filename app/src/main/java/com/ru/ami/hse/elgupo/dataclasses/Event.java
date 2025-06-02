@@ -3,6 +3,7 @@ package com.ru.ami.hse.elgupo.dataclasses;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.zip.DataFormatException;
 
 import lombok.Getter;
@@ -30,7 +31,20 @@ public class Event implements Serializable {
         }
     }
 
-    public void addAdress(String newAdress) {
-        adressList.add(newAdress);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()){
+            return false;
+        }
+        Event event = (Event) o;
+        return Objects.equals(id, event.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

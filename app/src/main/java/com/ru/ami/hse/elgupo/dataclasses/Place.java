@@ -2,6 +2,7 @@ package com.ru.ami.hse.elgupo.dataclasses;
 
 import org.json.JSONException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.zip.DataFormatException;
@@ -9,7 +10,7 @@ import java.util.zip.DataFormatException;
 import lombok.Getter;
 
 @Getter
-public class Place {
+public class Place implements Serializable {
     private final Integer id;
     private final String name;
     private final Double latitude;
