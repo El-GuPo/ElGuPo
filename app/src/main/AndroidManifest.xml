@@ -25,6 +25,7 @@
             android:exported="false"/>
         <activity
             android:name=".eventFeed.EventFeedActivity"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
             android:exported="false"/>
         <activity
             android:name=".profile.ProfileActivity"

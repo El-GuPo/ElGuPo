@@ -6,4 +6,8 @@
     <color name="toolbar_icon_color">#1E1E1E</color>
     <color name="button_color">#D9D9D9</color>
     <color name="toolbar_background">#D9D9D9</color>
+    <color name="search_background">#EBEBEB</color>
+    <color name="search_color">#E1E1E1</color>
+    <color name="on_surface">#000000</color>
+    <color name="surface">#FFFFFF</color>
 </resources>
