@@ -88,14 +88,17 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.14.2")
     annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
 
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
 
     //Navigation
     implementation("androidx.navigation:navigation-fragment:2.7.7")
     implementation("androidx.navigation:navigation-ui:2.7.7")
     implementation("androidx.navigation:navigation-runtime:2.7.7")
 
+    implementation ("com.google.android.material:material:1.12.0")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version")
     implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version")
     implementation ("commons-validator:commons-validator:1.9.0")
+
 }

@@ -20,7 +20,7 @@ public class ServerRequester {
     }
 
     public interface EventsByCategoryCallback {
-        void onSuccess(HashMap<Category, List<Event>> data);
+        void onSuccess(HashMap<Integer, List<Event>> data);
         void onError(Throwable t);
     }
 
@@ -51,9 +51,9 @@ public class ServerRequester {
                 .getInstance()
                 .getInstanceOfService(EventsByCategoryApiService.class)
                 .getEventsByCategory()
-                .enqueue(new Callback<HashMap<Category, List<Event>>>() {
+                .enqueue(new Callback<HashMap<Integer, List<Event>>>() {
                     @Override
-                    public void onResponse(Call<HashMap<Category, List<Event>>> call, Response<HashMap<Category, List<Event>>> response) {
+                    public void onResponse(Call<HashMap<Integer, List<Event>>> call, Response<HashMap<Integer, List<Event>>> response) {
                         if (response.isSuccessful() && response.body() != null) {
                             callback.onSuccess(response.body());
                         } else {
@@ -62,7 +62,7 @@ public class ServerRequester {
                     }
 
                     @Override
-                    public void onFailure(Call<HashMap<Category, List<Event>>> call, Throwable t) {
+                    public void onFailure(Call<HashMap<Integer, List<Event>>> call, Throwable t) {
                         callback.onError(t);
                     }
                 });

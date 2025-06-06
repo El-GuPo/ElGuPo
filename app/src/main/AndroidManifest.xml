@@ -17,7 +17,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Design.Light.NoActionBar"
+        android:theme="@style/Theme.MyApp"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
@@ -25,6 +25,7 @@
             android:exported="false"/>
         <activity
             android:name=".eventFeed.EventFeedActivity"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
             android:exported="false"/>
         <activity
             android:name=".profile.ProfileActivity"
@@ -40,16 +41,17 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true" />
-        <activity
-            android:name=".authentication.CheckEmailActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".authentication.CheckEmailActivity"
+            android:exported="true" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
