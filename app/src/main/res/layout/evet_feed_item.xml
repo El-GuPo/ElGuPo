@@ -1,39 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="8dp"
     android:layout_margin="8dp"
-    app:cardPreventCornerOverlap="false"
+    android:layout_marginHorizontal="8dp"
     app:cardCornerRadius="20dp"
-    app:cardElevation="2dp">
+    app:cardElevation="2dp"
+    app:cardPreventCornerOverlap="false">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@color/card_color"
+        android:orientation="vertical"
         android:padding="16dp">
 
         <ImageView
             android:id="@+id/eventFeedItemLogo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_default_image"
-            android:layout_marginBottom="8dp"/>
+            android:src="@drawable/ic_default_image" />
+
+        <TextView
+            android:id="@+id/event_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:text="@string/Category"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:background="@drawable/category_bg" />
 
         <TextView
             android:id="@+id/event_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="4dp"/>
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,14 +55,14 @@
                 android:id="@+id/event_date_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/event_date_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:layout_marginTop="4dp"/>
+                android:layout_marginTop="4dp"
+                android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

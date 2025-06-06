@@ -32,7 +32,6 @@ public class EventFeedActivity extends AppCompatActivity implements RecyclerView
     private BottomNavigationView bottomNavigationView;
     private EventFeedViewModel eventFeedViewModel;
     private EventsAdapter adapter;
-    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,15 +39,19 @@ public class EventFeedActivity extends AppCompatActivity implements RecyclerView
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_event_feed);
 
-        Toolbar toolbar = findViewById(R.id.searchTool);
-        setSupportActionBar(toolbar);
-
+        setUpSearchView();
         setupNavigation();
 
         setUpViewModel();
         setUpRecyclerView();
         setUpObservers();
 
+    }
+
+
+    private void setUpSearchView() {
+        Toolbar toolbar = findViewById(R.id.searchTool);
+        setSupportActionBar(toolbar);
     }
 
     private void setUpViewModel() {
@@ -106,16 +109,14 @@ public class EventFeedActivity extends AppCompatActivity implements RecyclerView
     @Override
     protected void onResume() {
         super.onResume();
-        bottomNavigationView.post(() -> {
-            bottomNavigationView.setSelectedItemId(R.id.button_nav_menu_list);
-        });
+        bottomNavigationView.post(() -> bottomNavigationView.setSelectedItemId(R.id.button_nav_menu_list));
     }
 
     @Override
     public void onItemClick(int position) {
         Event event = adapter.getEventAtPosition(position);
         Bundle args = new Bundle();
-        args.putString("event_name", event.getName());
+        args.putParcelable("event", event);
 
         Log.w("OnItemClick", "onItemClick called");
         findViewById(R.id.eventFeed_recyclerView).setVisibility(View.GONE);
@@ -128,20 +129,21 @@ public class EventFeedActivity extends AppCompatActivity implements RecyclerView
                 .setCustomAnimations(R.anim.slide_in_right,
                         R.anim.slide_out_left)
                 .replace(R.id.fragment_container, eventFragment)
+                .addToBackStack("event_detail")
                 .commit();
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.eventFeedSearch){
+        if (id == R.id.eventFeedSearch) {
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_event_feed, menu);
         MenuItem menuItem = menu.findItem(R.id.eventFeedSearch);
         SearchView searchView = (SearchView) menuItem.getActionView();
@@ -154,13 +156,18 @@ public class EventFeedActivity extends AppCompatActivity implements RecyclerView
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                String searchStr = newText;
-                adapter.getFilter().filter(newText );
+                adapter.getFilter().filter(newText);
                 return false;
             }
         });
         return super.onCreateOptionsMenu(menu);
 
+    }
+
+    public void returnToEventFeed() {
+        findViewById(R.id.eventFeed_recyclerView).setVisibility(View.VISIBLE);
+        findViewById(R.id.searchTool).setVisibility(View.VISIBLE);
+        findViewById(R.id.fragment_container).setVisibility(View.GONE);
     }
 
 }

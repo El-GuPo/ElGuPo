@@ -28,8 +28,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class PhotoServerRequesterTest {
 
     private File realFile;
-    private Long userID = 1L;
-    private Long emptyUserID = 99L;
+    private final Long userID = 1L;
+    private final Long emptyUserID = 99L;
 
     @Before
     public void setUp() throws Exception {

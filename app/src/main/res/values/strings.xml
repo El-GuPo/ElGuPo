@@ -6,4 +6,11 @@
     <string name="Map_button_name">Map</string>
     <string name="Calendar_button_name">My events</string>
     <string name="User_button_name">User</string>
+    <string name="btn_tinder">Подбор спутника</string>
+    <string name="btn_attend">Хочу пойти!</string>
+    <string name="Category">Категория</string>
+    <string name="locations_title">Места проведения:</string>
+    <string name="buttonBack_description">Button for back</string>
+    <string name="imageEvent_description">Event image</string>
+    <string name="event_name">Название события</string>
 </resources>

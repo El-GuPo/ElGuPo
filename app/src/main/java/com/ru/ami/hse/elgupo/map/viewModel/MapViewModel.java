@@ -17,7 +17,7 @@ import java.util.List;
 
 public class MapViewModel extends AndroidViewModel {
     private final PlacesRepository repository;
-    private MutableLiveData<List<Place>> places = new MutableLiveData<>();
+    private final MutableLiveData<List<Place>> places = new MutableLiveData<>();
 
     public MapViewModel(
             @NonNull Application application

@@ -1,5 +1,6 @@
 package com.ru.ami.hse.elgupo.eventFeed.adapter;
 
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +10,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.Target;
 import com.ru.ami.hse.elgupo.R;
+import com.ru.ami.hse.elgupo.dataclasses.Category;
 import com.ru.ami.hse.elgupo.dataclasses.Event;
+import com.ru.ami.hse.elgupo.eventFeed.utils.CategoryUtils;
 import com.ru.ami.hse.elgupo.map.utils.DateUtils;
 
 import java.util.ArrayList;
@@ -25,9 +29,9 @@ import java.util.Map;
 
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewHolder> implements Filterable {
     private final RecyclerViewInterface recyclerViewInterface;
+    private final List<Event> eventsList;
+    private final List<Event> eventsListFiltered;
     private Map<Integer, List<Event>> eventsByCategory;
-    private List<Event> eventsList;
-    private List<Event> eventsListFiltered;
 
     public EventsAdapter(RecyclerViewInterface recyclerViewInterface) {
         this.eventsList = new ArrayList<>();
@@ -48,9 +52,15 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
     public void onBindViewHolder(@NonNull EventsAdapter.EventViewHolder holder, int position) {
         Event event = eventsListFiltered.get(position);
 
+        setUpEventCategory(holder, event);
+
         holder.eventName.setText(event.getName());
-        holder.eventDateStart.setText("Начало: " + DateUtils.convertTimestampToTime(event.getDateStart()));
-        holder.eventDateEnd.setText("Окончание: " + DateUtils.convertTimestampToTime(event.getDateEnd()));
+        StringBuilder sb = new StringBuilder("Начало: ");
+        sb.append(DateUtils.convertTimestampToTime(event.getDateStart()));
+        holder.eventDateStart.setText(sb.toString());
+        sb = new StringBuilder("Окончание: ");
+        sb.append(DateUtils.convertTimestampToTime(event.getDateEnd()));
+        holder.eventDateEnd.setText(sb.toString());
 
         if (event.getLogo() != null && !event.getLogo().isEmpty()) {
             Glide.with(holder.itemView.getContext())
@@ -86,7 +96,16 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         notifyDataSetChanged();
     }
 
-    public Event getEventAtPosition(int position){
+    private void setUpEventCategory(@NonNull EventsAdapter.EventViewHolder holder, Event event) {
+        Category category = Category.getCategoryById(event.getCatId());
+        holder.category.setText(category.getTitle());
+
+        int colorResId = CategoryUtils.categoryColor(category);
+        GradientDrawable background = (GradientDrawable) holder.category.getBackground();
+        background.setColor(ContextCompat.getColor(holder.itemView.getContext(), colorResId));
+    }
+
+    public Event getEventAtPosition(int position) {
         return eventsListFiltered.get(position);
     }
 
@@ -96,13 +115,12 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 List<Event> filtered = new ArrayList<>();
-                if(constraint == null || constraint.length() == 0){
+                if (constraint == null || constraint.length() == 0) {
                     filtered.addAll(eventsList);
-                } else{
+                } else {
                     String searchChars = constraint.toString().toLowerCase().trim();
-                    List<Event> newEventList = new ArrayList<>();
-                    for(Event event : eventsListFiltered){
-                        if(event.getName().toLowerCase().contains(searchChars)){
+                    for (Event event : eventsListFiltered) {
+                        if (event.getName().toLowerCase().contains(searchChars) || Category.getCategoryById(event.getCatId()).getTitle().toLowerCase().contains(searchChars)) {
                             filtered.add(event);
                         }
                     }
@@ -125,6 +143,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
 
     public static class EventViewHolder extends RecyclerView.ViewHolder {
         ImageView logo;
+        TextView category;
         TextView eventName;
         TextView eventDateStart;
         TextView eventDateEnd;
@@ -132,6 +151,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         public EventViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
             logo = itemView.findViewById(R.id.eventFeedItemLogo);
+            category = itemView.findViewById(R.id.event_category);
             eventName = itemView.findViewById(R.id.event_name);
             eventDateStart = itemView.findViewById(R.id.event_date_start);
             eventDateEnd = itemView.findViewById(R.id.event_date_end);
@@ -139,9 +159,9 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(recyclerViewInterface != null){
+                    if (recyclerViewInterface != null) {
                         int position = getAbsoluteAdapterPosition();
-                        if(position != RecyclerView.NO_POSITION){
+                        if (position != RecyclerView.NO_POSITION) {
                             recyclerViewInterface.onItemClick(position);
                         }
                     }

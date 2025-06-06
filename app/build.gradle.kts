@@ -95,8 +95,10 @@ dependencies {
     implementation("androidx.navigation:navigation-ui:2.7.7")
     implementation("androidx.navigation:navigation-runtime:2.7.7")
 
+    implementation ("com.google.android.material:material:1.12.0")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version")
     implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version")
     implementation ("commons-validator:commons-validator:1.9.0")
+
 }

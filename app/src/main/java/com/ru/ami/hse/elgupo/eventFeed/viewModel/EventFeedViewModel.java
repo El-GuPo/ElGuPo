@@ -24,9 +24,9 @@ public class EventFeedViewModel extends AndroidViewModel {
 
     private final EventFeedRepository eventsRepository;
     @Getter
-    private MutableLiveData<Map<Integer, List<Event>>> eventsByCategory = new MutableLiveData<>();
+    private final MutableLiveData<Map<Integer, List<Event>>> eventsByCategory = new MutableLiveData<>();
     @Getter
-    private MutableLiveData<List<Event>> allEvents = new MutableLiveData<>();
+    private final MutableLiveData<List<Event>> allEvents = new MutableLiveData<>();
 
     public EventFeedViewModel(@NonNull Application application) {
         super(application);
