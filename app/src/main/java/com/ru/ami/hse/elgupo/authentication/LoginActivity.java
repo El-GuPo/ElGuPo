@@ -64,12 +64,12 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putLong("userId", response.body().id);
                         editor.apply();
 
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);;
-//                        if (!response.body().isProfileFilledOut) {
-//                            intent = new Intent(LoginActivity.this, ProfileFillingActivity.class);
-//                        } else {
-//                            intent = new Intent(LoginActivity.this, MainActivity.class);
-//                        }
+                        Intent intent;
+                        if (!response.body().isProfileFilledOut) {
+                            intent = new Intent(LoginActivity.this, ProfileFillingActivity.class);
+                        } else {
+                            intent = new Intent(LoginActivity.this, MainActivity.class);
+                        }
 
                         startActivity(intent);
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
