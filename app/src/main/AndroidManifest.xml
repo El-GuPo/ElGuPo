@@ -28,12 +28,8 @@
         <activity
             android:name=".eventFeed.EventFeedActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+
         <activity
             android:name=".profile.ProfileActivity"
             android:exported="false" />
@@ -50,10 +46,16 @@
             android:name=".MainActivity"
             android:exported="true" />
 
-
+        <activity android:name=".profile.ProfileFillingActivity"
+            android:exported="false"/>
         <activity
             android:name=".authentication.CheckEmailActivity"
-            android:exported="true" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
 
         <meta-data

@@ -2,7 +2,9 @@ package com.ru.ami.hse.elgupo.authentication;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -14,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ru.ami.hse.elgupo.MainActivity;
 import com.ru.ami.hse.elgupo.R;
+import com.ru.ami.hse.elgupo.profile.ProfileFillingActivity;
 import com.ru.ami.hse.elgupo.serverrequests.NetworkManager;
 import com.ru.ami.hse.elgupo.serverrequests.authentication.LoginApiService;
 import com.ru.ami.hse.elgupo.serverrequests.authentication.models.RegistrationRequest;
@@ -101,7 +104,17 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onResponse(Call<RegistrationResponse> call, Response<RegistrationResponse> response) {
                 if (response.isSuccessful()) {
                     if (response.body().message.equals("OK")) {
-                        Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
+                        SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putLong("userId", response.body().id);
+                        editor.apply();
+
+                        long userId = prefs.getLong("userId", -1L);
+
+                        Log.d("REGISTRATION", "User id is " + userId);
+
+
+                        Intent intent = new Intent(RegistrationActivity.this, ProfileFillingActivity.class);
                         startActivity(intent);
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         finish();
