@@ -13,4 +13,23 @@
     <string name="buttonBack_description">Button for back</string>
     <string name="imageEvent_description">Event image</string>
     <string name="event_name">Название события</string>
+    <string name="profile_activity_name">Имя</string>
+    <string name="profile_activity_setName">Введите имя</string>
+    <string name="profile_activity_surname">Фамилия</string>
+    <string name="profile_activity_setSurname">Введите фамилию</string>
+    <string name="profile_activity_btnLoadPhoto">Загрузить фото</string>
+    <string name="profile_activity_sex">Пол</string>
+    <string name="profile_activity_setSex">Пол</string>
+    <string name="profile_activity_age">Возраст</string>
+    <string name="profile_activity_setAge">Введите возраст</string>
+    <string name="profile_activity_description">Описание (макс. 500 символов)</string>
+    <string name="profile_activity_setDescription">Расскажите о себе</string>
+    <string name="profile_activity_tg">Telegram</string>
+    <string name="profile_activity_setTg">username</string>
+    <string name="profile_activity_userId">ID пользователя</string>
+    <string name="profile_activity_email">Email</string>
+    <string name="profile_activity_btnSave">Сохранить изменения</string>
+    <string name="male">Мужчина</string>
+    <string name="female">Женщина</string>
+    <string name="prefer_not_to_say">Не указано</string>
 </resources>
