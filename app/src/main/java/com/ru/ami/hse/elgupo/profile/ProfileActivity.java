@@ -1,6 +1,7 @@
 package com.ru.ami.hse.elgupo.profile;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,7 +39,7 @@ import java.io.IOException;
 import java.net.URL;
 
 public class ProfileActivity extends AppCompatActivity {
-    private final Long userId = 1L;
+    private Long userId;
     private BottomNavigationView bottomNavigationView;
     private PhotoViewModel photoViewModel;
     private UserDataViewModel userDataViewModel;
@@ -51,6 +52,7 @@ public class ProfileActivity extends AppCompatActivity {
     private String description;
     private String tgTag;
     private boolean isDataSaved;
+    private boolean isPhotoSaved;
     private String userEmail;
 
     private ImageView userImageView;
@@ -65,19 +67,22 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        userId = prefs.getLong("userId", -1L);
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_profile);
         setupNavigation();
 
         photoViewModel = new ViewModelProvider(this).get(PhotoViewModel.class);
+        photoViewModel.getPhotoUrl(userId);
         userDataViewModel = new ViewModelProvider(this).get(UserDataViewModel.class);
         userDataViewModel.loadUserData(userId);
 
         initViews();
         initLaunchers();
         setUpObservers();
-        loadUserPhoto();
         setUpListeners();
     }
 
@@ -115,6 +120,22 @@ public class ProfileActivity extends AppCompatActivity {
                 updateUserDataWindow();
             }
         });
+        photoViewModel.getPhotoUrl(userId).observeForever(new Observer<Resource<URL>>() {
+            @Override
+            public void onChanged(Resource<URL> urlResource) {
+                if (urlResource.status == Resource.Status.SUCCESS) {
+                    Glide.with(ProfileActivity.this)
+                            .load(urlResource.data.toString())
+                            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                            .circleCrop()
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                            .skipMemoryCache(false)
+                            .placeholder(R.drawable.user)
+                            .error(R.drawable.user)
+                            .into(userImageView);
+                }
+            }
+        });
     }
 
     private void updateUserDataWindow() {
@@ -132,32 +153,11 @@ public class ProfileActivity extends AppCompatActivity {
                     genderToggleGroup.check(toggleNotSpecified.getId());
             }
         }
-
         etAge.setText(String.valueOf(age));
         etDescription.setText(description);
         etTelegram.setText(tgTag);
         tvUserId.setText(userId.toString());
         tvEmail.setText(userEmail);
-    }
-
-    private void loadUserPhoto() {
-        photoViewModel.getPhotoUrl(userId).observeForever(new Observer<Resource<URL>>() {
-            @Override
-            public void onChanged(Resource<URL> urlResource) {
-                if (urlResource.status == Resource.Status.SUCCESS) {
-                    Glide.with(ProfileActivity.this)
-                            .load(urlResource.data.toString())
-                            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                            .circleCrop()
-                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                            .skipMemoryCache(false)
-                            .placeholder(R.drawable.user)
-                            .error(R.drawable.user)
-                            .into(userImageView);
-                }
-            }
-        });
-
     }
 
     private void initLaunchers() {
@@ -223,6 +223,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (!surname.equals(etLastName.getText().toString())) {
             isDataSaved = false;
             surname = etLastName.getText().toString();
+            Log.w("Profile Activity", surname);
         }
         try {
             String s = etAge.getText().toString();
@@ -254,14 +255,18 @@ public class ProfileActivity extends AppCompatActivity {
             } catch (Exception e) {
                 Log.e("Profile activity update userData", e.getMessage());
             }
-
+        }
+        if (!isPhotoSaved) {
             try {
-                photoViewModel.uploadUserPhoto(userId, userPhoto);
+                if (userPhoto != null) {
+                    photoViewModel.uploadUserPhoto(userId, userPhoto);
+                }
             } catch (Exception e) {
                 Log.e("Profile activity update photo", e.getMessage());
             }
         }
         isDataSaved = true;
+        isPhotoSaved = true;
     }
 
     private void loadImageFromUri(Uri uri) {
@@ -280,7 +285,7 @@ public class ProfileActivity extends AppCompatActivity {
                 .placeholder(R.drawable.user)
                 .error(R.drawable.user)
                 .into(userImageView);
-        isDataSaved = false;
+        isPhotoSaved = false;
     }
 
     private void setupNavigation() {

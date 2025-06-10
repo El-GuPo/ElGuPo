@@ -37,20 +37,13 @@ public class ProfileFillingActivity extends AppCompatActivity {
     private PhotoViewModel photoViewModel;
     private UserDataViewModel userDataViewModel;
     private File userPhoto;
-    private String name;
-    private String surname;
-    private String gender;
     private String chosenGender;
-    private Integer age;
-    private String description;
-    private String tgTag;
     private String userEmail;
 
     private ImageView userImageView;
     private EditText etFirstName, etLastName, etAge, etDescription, etTelegram;
     private TextView tvUserId, tvEmail;
     private MaterialButtonToggleGroup genderToggleGroup;
-    private MaterialButton toggleMale, toggleFemale, toggleNotSpecified;
     private MaterialButton btnSave, btnLoadPhoto;
 
     private ActivityResultLauncher<String> galleryLauncher;
@@ -58,25 +51,16 @@ public class ProfileFillingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        try {
-            SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-            userId = prefs.getLong("userId", -1L);
-            Log.i("ProfilFillingActivity", "UserId is " + userId);
-        } catch (Exception e) {
-            Log.e("ProfilFillingActivity", e.getMessage());
-        }
-        Log.w("ProfilFillingActivity", "On create");
+        SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        userId = prefs.getLong("userId", -1L);
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.profile_filling_activity_layout);
 
         photoViewModel = new ViewModelProvider(this).get(PhotoViewModel.class);
         userDataViewModel = new ViewModelProvider(this).get(UserDataViewModel.class);
-        try {
-            userDataViewModel.loadUserData(userId);
-        } catch (Exception e) {
-            Log.w("ProfilFillingActivity", e.getMessage());
-        }
+        userDataViewModel.loadUserData(userId);
 
         initViews();
         initLaunchers();
@@ -89,9 +73,6 @@ public class ProfileFillingActivity extends AppCompatActivity {
         etFirstName = findViewById(R.id.etFirstName);
         etLastName = findViewById(R.id.etLastName);
         genderToggleGroup = findViewById(R.id.genderToggleGroup);
-        toggleMale = findViewById(R.id.toggleMale);
-        toggleFemale = findViewById(R.id.toggleFemale);
-        toggleNotSpecified = findViewById(R.id.toggleNotSpecified);
         etAge = findViewById(R.id.etAge);
         etDescription = findViewById(R.id.etDescription);
         etTelegram = findViewById(R.id.etTelegram);
@@ -169,8 +150,9 @@ public class ProfileFillingActivity extends AppCompatActivity {
     }
 
     private void saveData() {
-        name = etFirstName.getText().toString();
-        surname = etLastName.getText().toString();
+        String name = etFirstName.getText().toString();
+        String surname = etLastName.getText().toString();
+        Integer age;
         try {
             String s = etAge.getText().toString();
             age = Integer.parseInt(s);
@@ -178,9 +160,9 @@ public class ProfileFillingActivity extends AppCompatActivity {
             Toast.makeText(this, "Некорретный формат возраста, невозможно сохранить изменения", Toast.LENGTH_SHORT).show();
             return;
         }
-        description = etDescription.getText().toString();
-        tgTag = etTelegram.getText().toString();
-        gender = chosenGender;
+        String description = etDescription.getText().toString();
+        String tgTag = etTelegram.getText().toString();
+        String gender = chosenGender;
 
         if (name == null || name.isEmpty()) {
             Toast.makeText(this, "Необходимо заполнить имя", Toast.LENGTH_SHORT).show();
@@ -191,15 +173,16 @@ public class ProfileFillingActivity extends AppCompatActivity {
         } else if (age == null) {
             Toast.makeText(this, "Необходимо заполнить возраст", Toast.LENGTH_SHORT).show();
             return;
-        } else if (tgTag == null || tgTag.isEmpty() || tgTag.toString().charAt(0) != '@') {
+        } else if (tgTag == null || tgTag.isEmpty() || tgTag.charAt(0) != '@') {
             Toast.makeText(this, "Неправильный формат telegram username", Toast.LENGTH_SHORT).show();
             return;
         } else if (chosenGender == null) {
             gender = "OTHER";
         }
-        if(description == null){
+        if (description == null) {
             description = "";
         }
+
         try {
             userDataViewModel.uploadUserData(new FillProfileRequest(userId, gender, name, surname, age, description, tgTag));
         } catch (Exception e) {
@@ -209,7 +192,7 @@ public class ProfileFillingActivity extends AppCompatActivity {
         try {
             photoViewModel.uploadUserPhoto(userId, userPhoto);
         } catch (Exception e) {
-            Log.e("Profile activity update photo", e.getMessage());
+            Log.e("Profile activity update userPhoto", e.getMessage());
         }
         navigateToActivity(MainActivity.class);
     }
