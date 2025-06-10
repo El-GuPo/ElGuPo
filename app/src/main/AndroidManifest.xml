@@ -32,7 +32,8 @@
 
         <activity
             android:name=".profile.ProfileActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"/>
         <activity
             android:name=".map.MapActivity"
             android:exported="false" />

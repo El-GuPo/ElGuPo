@@ -173,7 +173,7 @@ public class ProfileFillingActivity extends AppCompatActivity {
         } else if (age == null) {
             Toast.makeText(this, "Необходимо заполнить возраст", Toast.LENGTH_SHORT).show();
             return;
-        } else if (tgTag == null || tgTag.isEmpty() || tgTag.charAt(0) != '@') {
+        } else if (tgTag == null || tgTag.isEmpty() || tgTag.charAt(0) != '@' || tgTag.length() < 2) {
             Toast.makeText(this, "Неправильный формат telegram username", Toast.LENGTH_SHORT).show();
             return;
         } else if (chosenGender == null) {

@@ -230,6 +230,16 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void saveData() {
+        if (etFirstName.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Необходимо заполнить имя", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (etLastName.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Необходимо заполнить фамилию", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (etTelegram.getText().toString().isEmpty() || etTelegram.getText().toString().charAt(0) != '@' || etTelegram.getText().toString().length() < 2) {
+            Toast.makeText(this, "Неправильный формат telegram username", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (!name.equals(etFirstName.getText().toString())) {
             isDataSaved = false;
             name = etFirstName.getText().toString();
