@@ -3,9 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <application
         android:name=".ElGupoApplication"
@@ -22,11 +24,12 @@
         tools:targetApi="31">
         <activity
             android:name=".scheduledEvents.ScheduledEventsActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".eventFeed.EventFeedActivity"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
-            android:exported="false"/>
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+
         <activity
             android:name=".profile.ProfileActivity"
             android:exported="false" />
@@ -41,6 +44,12 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:exported="true" />
+
+        <activity android:name=".profile.ProfileFillingActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".authentication.CheckEmailActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,9 +57,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".authentication.CheckEmailActivity"
-            android:exported="true" />
 
         <meta-data
             android:name="preloaded_fonts"

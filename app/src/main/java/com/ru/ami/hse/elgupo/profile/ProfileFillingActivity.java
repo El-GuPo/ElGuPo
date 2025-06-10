@@ -15,51 +15,35 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.Target;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.ru.ami.hse.elgupo.MainActivity;
 import com.ru.ami.hse.elgupo.R;
-import com.ru.ami.hse.elgupo.eventFeed.EventFeedActivity;
-import com.ru.ami.hse.elgupo.map.MapActivity;
 import com.ru.ami.hse.elgupo.profile.photo.PhotoViewModel;
-import com.ru.ami.hse.elgupo.profile.photo.Resource;
 import com.ru.ami.hse.elgupo.profile.photo.downloadUtils;
 import com.ru.ami.hse.elgupo.profile.viewModel.UserDataViewModel;
-import com.ru.ami.hse.elgupo.scheduledEvents.ScheduledEventsActivity;
 import com.ru.ami.hse.elgupo.serverrequests.authentication.models.FillProfileRequest;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileFillingActivity extends AppCompatActivity {
     private Long userId;
-    private BottomNavigationView bottomNavigationView;
     private PhotoViewModel photoViewModel;
     private UserDataViewModel userDataViewModel;
     private File userPhoto;
-    private String name;
-    private String surname;
-    private String gender;
     private String chosenGender;
-    private Integer age;
-    private String description;
-    private String tgTag;
-    private boolean isDataSaved;
-    private boolean isPhotoSaved;
     private String userEmail;
 
     private ImageView userImageView;
     private EditText etFirstName, etLastName, etAge, etDescription, etTelegram;
     private TextView tvUserId, tvEmail;
     private MaterialButtonToggleGroup genderToggleGroup;
-    private MaterialButton toggleMale, toggleFemale, toggleNotSpecified;
     private MaterialButton btnSave, btnLoadPhoto;
 
     private ActivityResultLauncher<String> galleryLauncher;
@@ -72,11 +56,9 @@ public class ProfileActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_profile);
-        setupNavigation();
+        setContentView(R.layout.profile_filling_activity_layout);
 
         photoViewModel = new ViewModelProvider(this).get(PhotoViewModel.class);
-        photoViewModel.getPhotoUrl(userId);
         userDataViewModel = new ViewModelProvider(this).get(UserDataViewModel.class);
         userDataViewModel.loadUserData(userId);
 
@@ -91,73 +73,25 @@ public class ProfileActivity extends AppCompatActivity {
         etFirstName = findViewById(R.id.etFirstName);
         etLastName = findViewById(R.id.etLastName);
         genderToggleGroup = findViewById(R.id.genderToggleGroup);
-        toggleMale = findViewById(R.id.toggleMale);
-        toggleFemale = findViewById(R.id.toggleFemale);
-        toggleNotSpecified = findViewById(R.id.toggleNotSpecified);
         etAge = findViewById(R.id.etAge);
         etDescription = findViewById(R.id.etDescription);
         etTelegram = findViewById(R.id.etTelegram);
         btnSave = findViewById(R.id.btnSave);
         btnLoadPhoto = findViewById(R.id.btnLoadPhoto);
         tvUserId = findViewById(R.id.tvUserId);
+        tvUserId.setText(userId.toString());
         tvEmail = findViewById(R.id.tvEmail);
-        isDataSaved = true;
 
         userImageView.setClipToOutline(true);
     }
 
     private void setUpObservers() {
         userDataViewModel.getUserData().observe(this, userData -> {
-            if (userData != null) {
-                name = userData.name;
-                surname = userData.surname;
-                gender = userData.sex;
-                chosenGender = gender;
-                age = userData.age;
-                description = userData.description;
-                tgTag = userData.telegramTag;
+            if (userData != null && userData.email != null) {
                 userEmail = userData.email;
-                updateUserDataWindow();
+                tvEmail.setText(userEmail);
             }
         });
-        photoViewModel.getPhotoUrl(userId).observeForever(new Observer<Resource<URL>>() {
-            @Override
-            public void onChanged(Resource<URL> urlResource) {
-                if (urlResource.status == Resource.Status.SUCCESS) {
-                    Glide.with(ProfileActivity.this)
-                            .load(urlResource.data.toString())
-                            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                            .circleCrop()
-                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                            .skipMemoryCache(false)
-                            .placeholder(R.drawable.user)
-                            .error(R.drawable.user)
-                            .into(userImageView);
-                }
-            }
-        });
-    }
-
-    private void updateUserDataWindow() {
-        etFirstName.setText(name);
-        etLastName.setText(surname);
-        if (gender != null) {
-            switch (gender) {
-                case "MAN":
-                    genderToggleGroup.check(toggleMale.getId());
-                    break;
-                case "WOMAN":
-                    genderToggleGroup.check(toggleFemale.getId());
-                    break;
-                default:
-                    genderToggleGroup.check(toggleNotSpecified.getId());
-            }
-        }
-        etAge.setText(String.valueOf(age));
-        etDescription.setText(description);
-        etTelegram.setText(tgTag);
-        tvUserId.setText(userId.toString());
-        tvEmail.setText(userEmail);
     }
 
     private void initLaunchers() {
@@ -216,57 +150,51 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void saveData() {
-        if (!name.equals(etFirstName.getText().toString())) {
-            isDataSaved = false;
-            name = etFirstName.getText().toString();
-        }
-        if (!surname.equals(etLastName.getText().toString())) {
-            isDataSaved = false;
-            surname = etLastName.getText().toString();
-            Log.w("Profile Activity", surname);
-        }
+        String name = etFirstName.getText().toString();
+        String surname = etLastName.getText().toString();
+        Integer age;
         try {
             String s = etAge.getText().toString();
-            Integer newAge = Integer.parseInt(s);
-            if (!age.equals(newAge)) {
-                age = newAge;
-                isDataSaved = false;
-            }
+            age = Integer.parseInt(s);
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Некорретный формат возраста, невозможно сохранить изменения", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!description.equals(etDescription.getText().toString())) {
-            isDataSaved = false;
-            description = etDescription.getText().toString();
+        String description = etDescription.getText().toString();
+        String tgTag = etTelegram.getText().toString();
+        String gender = chosenGender;
+
+        if (name == null || name.isEmpty()) {
+            Toast.makeText(this, "Необходимо заполнить имя", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (surname == null || surname.isEmpty()) {
+            Toast.makeText(this, "Необходимо заполнить фамилию", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (age == null) {
+            Toast.makeText(this, "Необходимо заполнить возраст", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (tgTag == null || tgTag.isEmpty() || tgTag.charAt(0) != '@') {
+            Toast.makeText(this, "Неправильный формат telegram username", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (chosenGender == null) {
+            gender = "OTHER";
         }
-        if (!tgTag.equals(etTelegram.getText().toString())) {
-            isDataSaved = false;
-            tgTag = etTelegram.getText().toString();
-        }
-        if (!gender.equals(chosenGender)) {
-            isDataSaved = false;
-            gender = chosenGender;
+        if (description == null) {
+            description = "";
         }
 
-        if (!isDataSaved) {
-            try {
-                userDataViewModel.uploadUserData(new FillProfileRequest(userId, gender, name, surname, age, description, tgTag));
-            } catch (Exception e) {
-                Log.e("Profile activity update userData", e.getMessage());
-            }
+        try {
+            userDataViewModel.uploadUserData(new FillProfileRequest(userId, gender, name, surname, age, description, tgTag));
+        } catch (Exception e) {
+            Log.e("Profile activity update userData", e.getMessage());
         }
-        if (!isPhotoSaved) {
-            try {
-                if (userPhoto != null) {
-                    photoViewModel.uploadUserPhoto(userId, userPhoto);
-                }
-            } catch (Exception e) {
-                Log.e("Profile activity update photo", e.getMessage());
-            }
+
+        try {
+            photoViewModel.uploadUserPhoto(userId, userPhoto);
+        } catch (Exception e) {
+            Log.e("Profile activity update userPhoto", e.getMessage());
         }
-        isDataSaved = true;
-        isPhotoSaved = true;
+        navigateToActivity(MainActivity.class);
     }
 
     private void loadImageFromUri(Uri uri) {
@@ -285,42 +213,12 @@ public class ProfileActivity extends AppCompatActivity {
                 .placeholder(R.drawable.user)
                 .error(R.drawable.user)
                 .into(userImageView);
-        isPhotoSaved = false;
-    }
-
-    private void setupNavigation() {
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.button_nav_menu_user);
-
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.button_nav_menu_user) {
-                return true;
-            } else if (item.getItemId() == R.id.button_nav_menu_list) {
-                navigateToActivity(EventFeedActivity.class);
-                return true;
-            } else if (item.getItemId() == R.id.button_nav_menu_map) {
-                navigateToActivity(MapActivity.class);
-                return true;
-            } else if (item.getItemId() == R.id.button_nav_menu_calendar) {
-                navigateToActivity(ScheduledEventsActivity.class);
-                return true;
-            }
-            return false;
-        });
     }
 
     private void navigateToActivity(Class<?> cls) {
         Intent intent = new Intent(this, cls);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        bottomNavigationView.post(() -> {
-            bottomNavigationView.setSelectedItemId(R.id.button_nav_menu_user);
-        });
-    }
 }

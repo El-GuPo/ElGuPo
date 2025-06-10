@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ru.ami.hse.elgupo.MainActivity;
 import com.ru.ami.hse.elgupo.R;
+import com.ru.ami.hse.elgupo.profile.ProfileFillingActivity;
 import com.ru.ami.hse.elgupo.serverrequests.NetworkManager;
 import com.ru.ami.hse.elgupo.serverrequests.authentication.LoginApiService;
 import com.ru.ami.hse.elgupo.serverrequests.authentication.models.RegistrationRequest;
@@ -95,7 +96,7 @@ public class RegistrationActivity extends AppCompatActivity {
             return;
         }
         String email = getIntent().getStringExtra("email");
-        RegistrationRequest request = new RegistrationRequest(email, etPassword.toString(), etPassword.toString());
+        RegistrationRequest request = new RegistrationRequest(email, etPassword.getText().toString(), etPassword.getText().toString());
 
         Call<RegistrationResponse> call = loginApiService.registerUser(request);
         call.enqueue(new Callback<>() {
@@ -113,7 +114,8 @@ public class RegistrationActivity extends AppCompatActivity {
                         Log.d("REGISTRATION", "User id is " + userId);
 
 
-                        Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
+                        Intent intent = new Intent(RegistrationActivity.this, ProfileFillingActivity.class);
+
                         startActivity(intent);
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         finish();

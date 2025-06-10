@@ -73,7 +73,8 @@ public class EventFragment extends Fragment {
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .skipMemoryCache(false)
                 .placeholder(R.drawable.ic_default_image)
-                .error(R.drawable.ic_default_image).into(eventImage);
+                .error(R.drawable.ic_default_image)
+                .into(eventImage);
 
         LocationAdapter locationAdapter = new LocationAdapter(event.getAdressList());
         locationsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));

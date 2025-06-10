@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ru.ami.hse.elgupo.MainActivity;
 import com.ru.ami.hse.elgupo.R;
+import com.ru.ami.hse.elgupo.profile.ProfileFillingActivity;
 import com.ru.ami.hse.elgupo.serverrequests.NetworkManager;
 import com.ru.ami.hse.elgupo.serverrequests.authentication.LoginApiService;
 import com.ru.ami.hse.elgupo.serverrequests.authentication.models.LoginRequest;
@@ -63,7 +64,14 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putLong("userId", response.body().id);
                         editor.apply();
 
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        Intent intent;
+                        if (!response.body().isProfileFilledOut) {
+                            intent = new Intent(LoginActivity.this, ProfileFillingActivity.class);
+                        } else {
+                            intent = new Intent(LoginActivity.this, MainActivity.class);
+                        }
+
+
                         startActivity(intent);
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         finish();
