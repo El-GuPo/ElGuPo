@@ -60,7 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView tvUserId, tvEmail;
     private MaterialButtonToggleGroup genderToggleGroup;
     private MaterialButton toggleMale, toggleFemale, toggleNotSpecified;
-    private MaterialButton btnSave, btnLoadPhoto;
+    private MaterialButton btnSave, btnLoadPhoto, btnDeletePhoto;
 
     private ActivityResultLauncher<String> galleryLauncher;
     private ActivityResultLauncher<String> permissionLauncher;
@@ -99,6 +99,7 @@ public class ProfileActivity extends AppCompatActivity {
         etTelegram = findViewById(R.id.etTelegram);
         btnSave = findViewById(R.id.btnSave);
         btnLoadPhoto = findViewById(R.id.btnLoadPhoto);
+        btnDeletePhoto = findViewById(R.id.btnDeletePhoto);
         tvUserId = findViewById(R.id.tvUserId);
         tvEmail = findViewById(R.id.tvEmail);
         isDataSaved = true;
@@ -183,6 +184,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setUpListeners() {
+        btnDeletePhoto.setOnClickListener(v -> deletePhoto());
         btnLoadPhoto.setOnClickListener(v -> checkPermissionAndOpenGallery());
         btnSave.setOnClickListener(v -> saveData());
         genderToggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
@@ -215,7 +217,29 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    private void deletePhoto() {
+        userPhoto = null;
+        isPhotoSaved = false;
+        Glide.with(this)
+                .load(R.drawable.user)
+                .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                .circleCrop()
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .skipMemoryCache(false)
+                .into(userImageView);
+    }
+
     private void saveData() {
+        if (etFirstName.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Необходимо заполнить имя", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (etLastName.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Необходимо заполнить фамилию", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (etTelegram.getText().toString().isEmpty() || etTelegram.getText().toString().charAt(0) != '@' || etTelegram.getText().toString().length() < 2) {
+            Toast.makeText(this, "Неправильный формат telegram username", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (!name.equals(etFirstName.getText().toString())) {
             isDataSaved = false;
             name = etFirstName.getText().toString();
@@ -260,6 +284,8 @@ public class ProfileActivity extends AppCompatActivity {
             try {
                 if (userPhoto != null) {
                     photoViewModel.uploadUserPhoto(userId, userPhoto);
+                } else {
+                    photoViewModel.deleteUserPhoto(userId);
                 }
             } catch (Exception e) {
                 Log.e("Profile activity update photo", e.getMessage());
