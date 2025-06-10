@@ -60,7 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView tvUserId, tvEmail;
     private MaterialButtonToggleGroup genderToggleGroup;
     private MaterialButton toggleMale, toggleFemale, toggleNotSpecified;
-    private MaterialButton btnSave, btnLoadPhoto;
+    private MaterialButton btnSave, btnLoadPhoto, btnDeletePhoto;
 
     private ActivityResultLauncher<String> galleryLauncher;
     private ActivityResultLauncher<String> permissionLauncher;
@@ -99,6 +99,7 @@ public class ProfileActivity extends AppCompatActivity {
         etTelegram = findViewById(R.id.etTelegram);
         btnSave = findViewById(R.id.btnSave);
         btnLoadPhoto = findViewById(R.id.btnLoadPhoto);
+        btnDeletePhoto = findViewById(R.id.btnDeletePhoto);
         tvUserId = findViewById(R.id.tvUserId);
         tvEmail = findViewById(R.id.tvEmail);
         isDataSaved = true;
@@ -183,6 +184,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setUpListeners() {
+        btnDeletePhoto.setOnClickListener(v -> deletePhoto());
         btnLoadPhoto.setOnClickListener(v -> checkPermissionAndOpenGallery());
         btnSave.setOnClickListener(v -> saveData());
         genderToggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
@@ -213,6 +215,18 @@ public class ProfileActivity extends AppCompatActivity {
         } else {
             permissionLauncher.launch(permission);
         }
+    }
+
+    private void deletePhoto() {
+        userPhoto = null;
+        isPhotoSaved = false;
+        Glide.with(this)
+                .load(R.drawable.user)
+                .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                .circleCrop()
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .skipMemoryCache(false)
+                .into(userImageView);
     }
 
     private void saveData() {
@@ -260,6 +274,8 @@ public class ProfileActivity extends AppCompatActivity {
             try {
                 if (userPhoto != null) {
                     photoViewModel.uploadUserPhoto(userId, userPhoto);
+                } else {
+                    photoViewModel.deleteUserPhoto(userId);
                 }
             } catch (Exception e) {
                 Log.e("Profile activity update photo", e.getMessage());

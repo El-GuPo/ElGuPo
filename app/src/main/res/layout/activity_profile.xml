@@ -34,14 +34,37 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/user" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnLoadPhoto"
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/photoToggleGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textColor="@color/white"
-                app:backgroundTint="@color/blue_500"
-                android:text="@string/profile_activity_btnLoadPhoto" />
+                android:orientation="horizontal"
+                app:singleSelection="false"
+                app:selectionRequired="false">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLoadPhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profile_activity_btnLoadPhoto"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@color/blue_500"
+                    app:cornerRadius="16dp"
+                    android:checkable="false" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDeletePhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_delete_photo"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@color/red_500"
+                    app:cornerRadius="16dp"
+                    android:checkable="false" />
+
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
 
             <TextView
                 android:layout_width="match_parent"
