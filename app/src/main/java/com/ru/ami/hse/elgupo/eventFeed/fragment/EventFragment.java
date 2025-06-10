@@ -1,6 +1,7 @@
 package com.ru.ami.hse.elgupo.eventFeed.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,11 +25,15 @@ import com.ru.ami.hse.elgupo.dataclasses.Category;
 import com.ru.ami.hse.elgupo.dataclasses.Event;
 import com.ru.ami.hse.elgupo.eventFeed.EventFeedActivity;
 import com.ru.ami.hse.elgupo.eventFeed.adapter.LocationAdapter;
+import com.ru.ami.hse.elgupo.eventFeed.viewModel.EventLikeViewModel;
 import com.ru.ami.hse.elgupo.map.utils.DateUtils;
+import com.ru.ami.hse.elgupo.serverrequests.eventsLike.models.LikeEventRequest;
 
 public class EventFragment extends Fragment {
 
     private Event event;
+    private Long userId;
+    private EventLikeViewModel eventLikeViewModel;
     private boolean isAttending;
 
     public EventFragment() {
@@ -37,11 +43,16 @@ public class EventFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        isAttending = false; // надо смотреть в бд и восстанавливать состояние
+        eventLikeViewModel = new ViewModelProvider(this).get(EventLikeViewModel.class);
 
         if (getArguments() != null) {
             event = getArguments().getParcelable("event");
+            userId = getArguments().getLong("userId");
+        } else {
+            Log.e("EventFragment", "Error in initializing in onCreate");
         }
+
+        eventLikeViewModel.checkIsEventLiked(userId, event.getId().longValue());
 
     }
 
@@ -57,11 +68,22 @@ public class EventFragment extends Fragment {
         RecyclerView locationsRecycler = view.findViewById(R.id.locations_recycler);
         MaterialButton btnTinder = view.findViewById(R.id.btn_tinder);
         MaterialButton btnAttend = view.findViewById(R.id.btn_attend);
-        if (isAttending) {
-            btnTinder.setVisibility(View.VISIBLE);
-        } else {
-            btnTinder.setVisibility(View.GONE);
-        }
+        eventLikeViewModel.getIsEventLiked().observe(getViewLifecycleOwner(), isAttending -> {
+            if (isAttending) {
+                btnTinder.setVisibility(View.VISIBLE);
+                btnAttend.setText("Иду");
+                btnAttend.setBackgroundTintList(
+                        ContextCompat.getColorStateList(requireContext(), R.color.blue_500)
+                );
+            } else {
+                btnTinder.setVisibility(View.GONE);
+                btnAttend.setText("Хочу пойти!");
+                btnAttend.setBackgroundTintList(
+                        ContextCompat.getColorStateList(requireContext(), R.color.green_700)
+                );
+            }
+            this.isAttending = isAttending;
+        });
         MaterialButton btnBack = view.findViewById(R.id.btn_back);
 
         setUpButtonObservers(btnAttend, btnTinder, btnBack);
@@ -133,16 +155,16 @@ public class EventFragment extends Fragment {
     }
 
     private void unregisterForEvent(Event event) {
-        // логика отмены регистрации на ивент
+        eventLikeViewModel.likeEvent(new LikeEventRequest(event.getId().longValue(), userId, event.getCatId().longValue(), isAttending));
+        Snackbar.make(requireView(), "Вы отменили регистрацию на событие: " + event.getName(), Snackbar.LENGTH_LONG).show();
     }
 
     private void registerForEvent(Event event) {
         /*
             Вызываем функции нужные для обработки регистарции на событие
          */
-        Snackbar.make(requireView(), "Вы зарегистрированы на событие: " + event.getName(), Snackbar.LENGTH_LONG).setAction("OK", v -> {
-            // Действие при нажатии на OK
-        }).show();
+        eventLikeViewModel.likeEvent(new LikeEventRequest(event.getId().longValue(), userId, event.getCatId().longValue(), isAttending));
+        Snackbar.make(requireView(), "Вы зарегистрированы на событие: " + event.getName(), Snackbar.LENGTH_LONG).show();
     }
 
 }
