@@ -1,6 +1,7 @@
 package com.ru.ami.hse.elgupo.eventFeed;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -29,12 +30,16 @@ import com.ru.ami.hse.elgupo.scheduledEvents.ScheduledEventsActivity;
 
 public class EventFeedActivity extends AppCompatActivity implements RecyclerViewInterface {
 
+    private Long userId;
     private BottomNavigationView bottomNavigationView;
     private EventFeedViewModel eventFeedViewModel;
     private EventsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        userId = prefs.getLong("userId", -1L);
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_event_feed);
@@ -117,8 +122,8 @@ public class EventFeedActivity extends AppCompatActivity implements RecyclerView
         Event event = adapter.getEventAtPosition(position);
         Bundle args = new Bundle();
         args.putParcelable("event", event);
+        args.putLong("userId", userId);
 
-        Log.w("OnItemClick", "onItemClick called");
         findViewById(R.id.eventFeed_recyclerView).setVisibility(View.GONE);
         findViewById(R.id.searchTool).setVisibility(View.GONE);
         findViewById(R.id.fragment_container).setVisibility(View.VISIBLE);
