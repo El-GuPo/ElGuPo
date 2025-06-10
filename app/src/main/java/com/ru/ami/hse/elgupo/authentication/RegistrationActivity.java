@@ -115,6 +115,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
                         Intent intent = new Intent(RegistrationActivity.this, ProfileFillingActivity.class);
+
                         startActivity(intent);
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         finish();
