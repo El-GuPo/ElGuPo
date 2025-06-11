@@ -31,7 +31,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_default="wrap"
+        app:layout_constrainedHeight="true"
         app:layout_constraintHeight_max="400dp"
         app:layout_constraintHeight_min="48dp"
         app:layout_constraintStart_toStartOf="parent"

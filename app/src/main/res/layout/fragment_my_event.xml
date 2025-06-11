@@ -7,6 +7,8 @@
     android:background="@color/white"
     android:padding="16dp">
 
+
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_back"
         android:layout_width="32dp"
@@ -21,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
-        android:id="@+id/eventImage"
+        android:id="@+id/myEventImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
@@ -44,7 +46,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/eventImage" />
+        app:layout_constraintTop_toBottomOf="@id/myEventImage" />
 
     <TextView
         android:id="@+id/event_category"
@@ -126,25 +128,41 @@
             android:textColor="@color/white"
             app:cornerRadius="8dp"
             app:iconPadding="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="@id/buttons_container"
+            app:layout_constraintBottom_toBottomOf="@id/buttons_container"
             app:layout_constraintEnd_toStartOf="@id/btn_tinder"
             app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_tinder"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/btn_tinder"
+            android:lines="1"
             android:textColor="@color/white"
             android:visibility="gone"
             app:cornerRadius="8dp"
             app:iconPadding="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_match"
             app:layout_constraintStart_toEndOf="@id/btn_attend"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="@id/buttons_container"
+            app:layout_constraintBottom_toBottomOf="@id/buttons_container"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_match"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_match"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:backgroundTint="@color/green_700"
+            app:cornerRadius="8dp"
+            app:iconPadding="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_tinder"
+            app:layout_constraintTop_toTopOf="@id/buttons_container"
+            app:layout_constraintBottom_toBottomOf="@id/buttons_container" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

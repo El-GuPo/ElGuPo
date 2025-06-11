@@ -15,7 +15,7 @@ import lombok.Getter;
 
 @Getter
 public class Event implements Serializable, Parcelable {
-    public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
+    public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<>() {
         @Override
         public Event createFromParcel(Parcel in) {
             return new Event(in);

@@ -57,10 +57,9 @@ public class MapActivity extends AppCompatActivity {
     private MapViewModel viewModel;
     private boolean permissionRequested = false;
     private BottomNavigationView bottomNavigationView;
-    private ImageButton btnMyLocation;
 
-    private FrameLayout dialogFragmentContainer;
     private Long userId;
+    private PlaceInfoDialog currentDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +70,10 @@ public class MapActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(MapViewModel.class);
 
-        btnMyLocation = findViewById(R.id.btnMyLocation);
+        ImageButton btnMyLocation = findViewById(R.id.btnMyLocation);
         btnMyLocation.setOnClickListener(v -> handleLocationButtonClick());
 
-        dialogFragmentContainer = findViewById(R.id.dialog_fragment_container);
+        FrameLayout dialogFragmentContainer = findViewById(R.id.dialog_fragment_container);
         dialogFragmentContainer.setVisibility(View.GONE);
 
         setupNavigation();
@@ -120,8 +119,8 @@ public class MapActivity extends AppCompatActivity {
         viewModel.getPlaces().observe(this, places -> {
             if (mapWindow != null) {
                 mapWindow.updateMarkers(places);
-                if (mapWindow.getCurrentDialog() != null && mapWindow.getCurrentDialog().isShowing()) {
-                    mapWindow.getCurrentDialog().updateEvents();
+                if (currentDialog != null && currentDialog.isShowing()) {
+                    currentDialog.updateEvents();
                 }
             }
 
@@ -240,9 +239,9 @@ public class MapActivity extends AppCompatActivity {
     }
 
     public void showDialogWindow(Place place) {
-        PlaceInfoDialog dialog = new PlaceInfoDialog(this,
+        currentDialog = new PlaceInfoDialog(this,
                 place, this);
-        dialog.show();
+        currentDialog.show();
     }
 
     public void navigateToFragment(Event event) {

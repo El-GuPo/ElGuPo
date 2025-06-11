@@ -33,4 +33,5 @@
     <string name="female">Женщина</string>
     <string name="prefer_not_to_say">Не указано</string>
     <string name="btn_delete_photo">Удалить фото</string>
+    <string name="btn_match">Мэтч</string>
 </resources>

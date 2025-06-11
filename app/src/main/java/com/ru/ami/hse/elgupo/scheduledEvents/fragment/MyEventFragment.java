@@ -1,4 +1,4 @@
-package com.ru.ami.hse.elgupo.eventFeed.fragment;
+package com.ru.ami.hse.elgupo.scheduledEvents.fragment;
 
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,29 +22,28 @@ import com.google.android.material.button.MaterialButton;
 import com.ru.ami.hse.elgupo.R;
 import com.ru.ami.hse.elgupo.dataclasses.Category;
 import com.ru.ami.hse.elgupo.dataclasses.Event;
-import com.ru.ami.hse.elgupo.eventFeed.EventFeedActivity;
 import com.ru.ami.hse.elgupo.eventFeed.adapter.LocationAdapter;
 import com.ru.ami.hse.elgupo.eventFeed.utils.CategoryUtils;
 import com.ru.ami.hse.elgupo.eventFeed.viewModel.EventLikeViewModel;
-import com.ru.ami.hse.elgupo.map.MapActivity;
 import com.ru.ami.hse.elgupo.map.utils.DateUtils;
+import com.ru.ami.hse.elgupo.scheduledEvents.ScheduledEventsActivity;
 import com.ru.ami.hse.elgupo.serverrequests.eventsLike.models.LikeEventRequest;
 
-public class EventFragment extends Fragment {
+public class MyEventFragment extends Fragment {
 
     private final String EVENT_PARAM = "event";
     private final String USER_ID_PARAM = "userId";
-    private final String TAG = "EventFragment";
+    private final String TAG = "MyEventFragment";
     private Event event;
     private Long userId;
     private EventLikeViewModel eventLikeViewModel;
-    private boolean isAttending;
+    private boolean isAttending = true;
 
-    public EventFragment() {
+    public MyEventFragment() {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         eventLikeViewModel = new ViewModelProvider(this).get(EventLikeViewModel.class);
@@ -57,15 +55,15 @@ public class EventFragment extends Fragment {
             Log.e(TAG, "Error in initializing in onCreate");
         }
 
-        eventLikeViewModel.checkIsEventLiked(userId, event.getId().longValue());
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.event_feed_event_fragment_layout, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_my_event, container, false);
 
-        ImageView eventImage = view.findViewById(R.id.eventImage);
+        ImageView eventImage = view.findViewById(R.id.myEventImage);
         TextView eventName = view.findViewById(R.id.event_name);
         TextView eventCategory = view.findViewById(R.id.event_category);
         TextView eventStartDate = view.findViewById(R.id.event_start_date);
@@ -73,15 +71,19 @@ public class EventFragment extends Fragment {
         RecyclerView locationsRecycler = view.findViewById(R.id.locations_recycler);
         MaterialButton btnTinder = view.findViewById(R.id.btn_tinder);
         MaterialButton btnAttend = view.findViewById(R.id.btn_attend);
+        MaterialButton btnMatch = view.findViewById(R.id.btn_match);
+
         eventLikeViewModel.getIsEventLiked().observe(getViewLifecycleOwner(), isAttending -> {
             if (isAttending) {
                 btnTinder.setVisibility(View.VISIBLE);
+                btnMatch.setVisibility(View.VISIBLE); // возможно проверять есть ли мэтчи
                 btnAttend.setText("Иду");
                 btnAttend.setBackgroundTintList(
                         ContextCompat.getColorStateList(requireContext(), R.color.blue_500)
                 );
             } else {
                 btnTinder.setVisibility(View.GONE);
+                btnMatch.setVisibility(View.GONE);
                 btnAttend.setText("Хочу пойти!");
                 btnAttend.setBackgroundTintList(
                         ContextCompat.getColorStateList(requireContext(), R.color.green_700)
@@ -89,9 +91,10 @@ public class EventFragment extends Fragment {
             }
             this.isAttending = isAttending;
         });
+
         MaterialButton btnBack = view.findViewById(R.id.btn_back);
 
-        setUpButtonObservers(btnAttend, btnTinder, btnBack);
+        setUpButtonObservers(btnAttend, btnTinder, btnBack, btnMatch);
         setUpTextViews(eventName, eventCategory, eventStartDate, eventEndDate);
         Glide.with(this)
                 .load(event.getLogo())
@@ -106,6 +109,7 @@ public class EventFragment extends Fragment {
         LocationAdapter locationAdapter = new LocationAdapter(event.getAdressList());
         locationsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         locationsRecycler.setAdapter(locationAdapter);
+
         return view;
     }
 
@@ -117,14 +121,11 @@ public class EventFragment extends Fragment {
 
     private void setUpTextViews(TextView eventName, TextView eventCategory, TextView eventStartDate, TextView eventEndDate) {
         eventName.setText(event.getName());
-        Log.w("CATEGORY", event.getCatId().toString());
-        Log.w("CATEGORY", Category.getCategoryById(event.getCatId()).getTitle());
         eventCategory.setText(Category.getCategoryById(event.getCatId()).getTitle());
 
         int colorResId = CategoryUtils.categoryColor(Category.getCategoryById(event.getCatId()));
         GradientDrawable background = (GradientDrawable) eventCategory.getBackground();
         background.setColor(ContextCompat.getColor(eventCategory.getContext(), colorResId));
-
 
         String dateStart = DateUtils.convertTimestampToTime(event.getDateStart());
         String dateEnd = DateUtils.convertTimestampToTime(event.getDateEnd());
@@ -136,7 +137,7 @@ public class EventFragment extends Fragment {
         eventEndDate.setText(sb.toString());
     }
 
-    private void setUpButtonObservers(MaterialButton btnAttend, MaterialButton btnTinder, MaterialButton btnBack) throws NullPointerException {
+    private void setUpButtonObservers(MaterialButton btnAttend, MaterialButton btnTinder, MaterialButton btnBack, MaterialButton btnMatch) throws NullPointerException {
         btnBack.setOnClickListener(v -> handleBackPressed());
         btnTinder.setOnClickListener(v -> {
             // Логика фрагментов тиндера
@@ -153,6 +154,7 @@ public class EventFragment extends Fragment {
                         ContextCompat.getColorStateList(requireContext(), R.color.blue_500)
                 );
                 btnTinder.setVisibility(View.VISIBLE);
+                btnMatch.setVisibility(View.VISIBLE);
             } else {
                 unregisterForEvent(event);
                 btnAttend.setText("Хочу пойти!");
@@ -160,15 +162,14 @@ public class EventFragment extends Fragment {
                         ContextCompat.getColorStateList(requireContext(), R.color.green_700)
                 );
                 btnTinder.setVisibility(View.GONE);
+                btnMatch.setVisibility(View.GONE);
             }
         });
     }
 
     private void handleBackPressed() {
-        if (getActivity() instanceof EventFeedActivity) {
-            ((EventFeedActivity) getActivity()).returnToEventFeed();
-        } else if (getActivity() instanceof MapActivity) {
-            ((MapActivity) getActivity()).returnToMap();
+        if (getActivity() instanceof ScheduledEventsActivity) {
+            ((ScheduledEventsActivity) getActivity()).returnToScheduledEventsActivity();
         }
         requireActivity().getSupportFragmentManager().popBackStack();
     }
@@ -184,5 +185,4 @@ public class EventFragment extends Fragment {
         eventLikeViewModel.likeEvent(new LikeEventRequest(event.getId().longValue(), userId, event.getCatId().longValue(), isAttending));
 
     }
-
 }

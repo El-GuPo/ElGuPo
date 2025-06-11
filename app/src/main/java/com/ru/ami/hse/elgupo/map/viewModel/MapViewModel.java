@@ -27,7 +27,7 @@ public class MapViewModel extends AndroidViewModel {
     }
 
     public void loadPlaces(double lat, double lon, double radius) {
-        repository.loadPlaces(lat, lon, 20, radius, new PlacesRepository.PlacesCallback() {
+        repository.loadPlaces(lat, lon, 500, radius, new PlacesRepository.PlacesCallback() {
             @Override
             public void onSuccess(List<Place> placesList) {
                 places.postValue(placesList);
