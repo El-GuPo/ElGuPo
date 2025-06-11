@@ -114,6 +114,7 @@ public class EventFeedActivity extends AppCompatActivity implements RecyclerView
     @Override
     protected void onResume() {
         super.onResume();
+        eventFeedViewModel.loadEventsByCategory();
         bottomNavigationView.post(() -> bottomNavigationView.setSelectedItemId(R.id.button_nav_menu_list));
     }
 
