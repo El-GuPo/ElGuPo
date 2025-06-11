@@ -75,6 +75,7 @@ public class MapWindow implements CameraListener {
     private final WeakReference<Context> contextRef;
     private final MapView mapView;
     private final Map map;
+    private final MapActivity mapActivity;
 
     /*
         Location Manager properties
@@ -109,6 +110,7 @@ public class MapWindow implements CameraListener {
 
     public MapWindow(MapView mapView_, Context context_, MapViewModel viewModel_, MapActivity mapActivity) {
         contextRef = new WeakReference<>(context_);
+        this.mapActivity = mapActivity;
         mapView = mapView_;
         map = mapView.getMapWindow().getMap();
         viewModel = viewModel_;
@@ -262,9 +264,7 @@ public class MapWindow implements CameraListener {
 
     private void showPlaceInfo(Place place) {
         try {
-            PlaceInfoDialog dialog = new PlaceInfoDialog(contextRef.get(), place);
-            currentDialog = dialog;
-            dialog.show();
+            mapActivity.showDialogWindow(place);
         } catch (Exception e) {
             Log.e("Map dialog error", e.getMessage());
         }
