@@ -12,17 +12,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ru.ami.hse.elgupo.R;
 import com.ru.ami.hse.elgupo.dataclasses.Event;
 import com.ru.ami.hse.elgupo.dataclasses.Place;
+import com.ru.ami.hse.elgupo.eventFeed.adapter.RecyclerViewInterface;
+import com.ru.ami.hse.elgupo.map.MapActivity;
 import com.ru.ami.hse.elgupo.map.adapter.EventsAdapter;
 
 import java.util.List;
 
-public class PlaceInfoDialog extends Dialog {
+public class PlaceInfoDialog extends Dialog implements RecyclerViewInterface {
     private final Place place;
     private EventsAdapter adapter;
+    private final MapActivity activity;
 
-    public PlaceInfoDialog(@NonNull Context context, Place place) {
+    public PlaceInfoDialog(@NonNull Context context, Place place, MapActivity activity) {
         super(context, R.style.RoundedDialogTheme);
         this.place = place;
+        this.activity = activity;
+
     }
 
     @Override
@@ -30,6 +35,7 @@ public class PlaceInfoDialog extends Dialog {
         super.onCreate(savedInstanceState != null
                 ? savedInstanceState
                 : new Bundle());
+
 
         setContentView(R.layout.popup_layout);
 
@@ -47,7 +53,7 @@ public class PlaceInfoDialog extends Dialog {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         eventsRecycler.setLayoutManager(layoutManager);
 
-        adapter = new EventsAdapter(place.getEvents());
+        adapter = new EventsAdapter(place.getEvents(), this);
         eventsRecycler.setAdapter(adapter);
     }
 
@@ -56,6 +62,13 @@ public class PlaceInfoDialog extends Dialog {
         if (adapter != null) {
             adapter.updateEvents(newEvents);
         }
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Event event = adapter.getEventAtPosition(position);
+        dismiss();
+        activity.navigateToFragment(event);
     }
 
 }

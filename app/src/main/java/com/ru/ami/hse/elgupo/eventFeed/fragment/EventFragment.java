@@ -26,11 +26,13 @@ import com.ru.ami.hse.elgupo.dataclasses.Event;
 import com.ru.ami.hse.elgupo.eventFeed.EventFeedActivity;
 import com.ru.ami.hse.elgupo.eventFeed.adapter.LocationAdapter;
 import com.ru.ami.hse.elgupo.eventFeed.viewModel.EventLikeViewModel;
+import com.ru.ami.hse.elgupo.map.MapActivity;
 import com.ru.ami.hse.elgupo.map.utils.DateUtils;
 import com.ru.ami.hse.elgupo.serverrequests.eventsLike.models.LikeEventRequest;
 
 public class EventFragment extends Fragment {
 
+    private String TAG = "EventFragment";
     private Event event;
     private Long userId;
     private EventLikeViewModel eventLikeViewModel;
@@ -49,7 +51,7 @@ public class EventFragment extends Fragment {
             event = getArguments().getParcelable("event");
             userId = getArguments().getLong("userId");
         } else {
-            Log.e("EventFragment", "Error in initializing in onCreate");
+            Log.e(TAG, "Error in initializing in onCreate");
         }
 
         eventLikeViewModel.checkIsEventLiked(userId, event.getId().longValue());
@@ -150,6 +152,8 @@ public class EventFragment extends Fragment {
     private void handleBackPressed() {
         if (getActivity() instanceof EventFeedActivity) {
             ((EventFeedActivity) getActivity()).returnToEventFeed();
+        } else if(getActivity() instanceof MapActivity){
+            ((MapActivity) getActivity()).returnToMap();
         }
         requireActivity().getSupportFragmentManager().popBackStack();
     }
