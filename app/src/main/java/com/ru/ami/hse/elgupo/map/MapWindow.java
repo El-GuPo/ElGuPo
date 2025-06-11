@@ -14,7 +14,6 @@ import androidx.core.content.ContextCompat;
 import com.ru.ami.hse.elgupo.ElGupoApplication;
 import com.ru.ami.hse.elgupo.R;
 import com.ru.ami.hse.elgupo.dataclasses.Place;
-import com.ru.ami.hse.elgupo.map.dialog.PlaceInfoDialog;
 import com.ru.ami.hse.elgupo.map.utils.BitmapUtils;
 import com.ru.ami.hse.elgupo.map.viewModel.MapViewModel;
 import com.yandex.mapkit.Animation;
@@ -73,7 +72,6 @@ public class MapWindow implements CameraListener {
 
     private final MapViewModel viewModel;
     private final WeakReference<Context> contextRef;
-    private final MapView mapView;
     private final Map map;
     private final MapActivity mapActivity;
 
@@ -103,16 +101,10 @@ public class MapWindow implements CameraListener {
     private InputListener inputListener;
     private MapObjectTapListener mapObjectTapListener;
 
-    /*
-        popup property
-     */
-    private PlaceInfoDialog currentDialog;
-
     public MapWindow(MapView mapView_, Context context_, MapViewModel viewModel_, MapActivity mapActivity) {
         contextRef = new WeakReference<>(context_);
         this.mapActivity = mapActivity;
-        mapView = mapView_;
-        map = mapView.getMapWindow().getMap();
+        map = mapView_.getMapWindow().getMap();
         viewModel = viewModel_;
         searchManager = SearchFactory.getInstance().createSearchManager(SearchManagerType.ONLINE);
 
@@ -301,7 +293,7 @@ public class MapWindow implements CameraListener {
                     );
 
                     IconStyle style = new IconStyle();
-                    style.setScale(currentZoom / 30f);
+                    style.setScale(currentZoom / 60f);
 
                     placemark.setIcon(icon);
                     placemark.setIconStyle(style);
@@ -426,14 +418,6 @@ public class MapWindow implements CameraListener {
     private Context getSafeContext() {
         Context context = contextRef.get();
         return context != null ? context : ElGupoApplication.getAppContext();
-    }
-
-    public boolean getLocationTrackingEnabled() {
-        return getLocationTrackingEnabled();
-    }
-
-    public PlaceInfoDialog getCurrentDialog() {
-        return currentDialog;
     }
 
 }

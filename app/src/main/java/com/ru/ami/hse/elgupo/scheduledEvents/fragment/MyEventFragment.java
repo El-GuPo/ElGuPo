@@ -1,5 +1,6 @@
 package com.ru.ami.hse.elgupo.scheduledEvents.fragment;
 
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.ru.ami.hse.elgupo.R;
 import com.ru.ami.hse.elgupo.dataclasses.Category;
 import com.ru.ami.hse.elgupo.dataclasses.Event;
 import com.ru.ami.hse.elgupo.eventFeed.adapter.LocationAdapter;
+import com.ru.ami.hse.elgupo.eventFeed.utils.CategoryUtils;
 import com.ru.ami.hse.elgupo.eventFeed.viewModel.EventLikeViewModel;
 import com.ru.ami.hse.elgupo.map.utils.DateUtils;
 import com.ru.ami.hse.elgupo.scheduledEvents.ScheduledEventsActivity;
@@ -121,6 +123,9 @@ public class MyEventFragment extends Fragment {
         eventName.setText(event.getName());
         eventCategory.setText(Category.getCategoryById(event.getCatId()).getTitle());
 
+        int colorResId = CategoryUtils.categoryColor(Category.getCategoryById(event.getCatId()));
+        GradientDrawable background = (GradientDrawable) eventCategory.getBackground();
+        background.setColor(ContextCompat.getColor(eventCategory.getContext(), colorResId));
 
         String dateStart = DateUtils.convertTimestampToTime(event.getDateStart());
         String dateEnd = DateUtils.convertTimestampToTime(event.getDateEnd());

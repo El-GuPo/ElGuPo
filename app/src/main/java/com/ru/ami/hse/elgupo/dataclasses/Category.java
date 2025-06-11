@@ -3,8 +3,6 @@ package com.ru.ami.hse.elgupo.dataclasses;
 import lombok.Getter;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Objects;
 
 @Getter
 public class Category implements Serializable {
@@ -21,7 +19,7 @@ public class Category implements Serializable {
     public static Category EXHIBITION = new Category("Выставки", 8);
     public static Category CONCERTS = new Category("Концерты", 11);
     public static Category THEATER = new Category("Театр", 7);
-    public static Category NOCATEGORY = new Category("", -1);
+    public static Category NOCATEGORY = new Category("Без категории", -1);
 
     public static Category[] CATEGORIES = {CINEMA, SPORT, EXHIBITION, CONCERTS, THEATER};
 

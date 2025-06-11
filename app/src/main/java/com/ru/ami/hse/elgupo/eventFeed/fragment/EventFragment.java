@@ -1,5 +1,6 @@
 package com.ru.ami.hse.elgupo.eventFeed.fragment;
 
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,12 +20,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.ru.ami.hse.elgupo.R;
 import com.ru.ami.hse.elgupo.dataclasses.Category;
 import com.ru.ami.hse.elgupo.dataclasses.Event;
 import com.ru.ami.hse.elgupo.eventFeed.EventFeedActivity;
 import com.ru.ami.hse.elgupo.eventFeed.adapter.LocationAdapter;
+import com.ru.ami.hse.elgupo.eventFeed.utils.CategoryUtils;
 import com.ru.ami.hse.elgupo.eventFeed.viewModel.EventLikeViewModel;
 import com.ru.ami.hse.elgupo.map.MapActivity;
 import com.ru.ami.hse.elgupo.map.utils.DateUtils;
@@ -34,7 +35,7 @@ public class EventFragment extends Fragment {
 
     private final String EVENT_PARAM = "event";
     private final String USER_ID_PARAM = "userId";
-    private String TAG = "EventFragment";
+    private final String TAG = "EventFragment";
     private Event event;
     private Long userId;
     private EventLikeViewModel eventLikeViewModel;
@@ -116,7 +117,13 @@ public class EventFragment extends Fragment {
 
     private void setUpTextViews(TextView eventName, TextView eventCategory, TextView eventStartDate, TextView eventEndDate) {
         eventName.setText(event.getName());
+        Log.w("CATEGORY", event.getCatId().toString());
+        Log.w("CATEGORY", Category.getCategoryById(event.getCatId()).getTitle());
         eventCategory.setText(Category.getCategoryById(event.getCatId()).getTitle());
+
+        int colorResId = CategoryUtils.categoryColor(Category.getCategoryById(event.getCatId()));
+        GradientDrawable background = (GradientDrawable) eventCategory.getBackground();
+        background.setColor(ContextCompat.getColor(eventCategory.getContext(), colorResId));
 
 
         String dateStart = DateUtils.convertTimestampToTime(event.getDateStart());
@@ -160,7 +167,7 @@ public class EventFragment extends Fragment {
     private void handleBackPressed() {
         if (getActivity() instanceof EventFeedActivity) {
             ((EventFeedActivity) getActivity()).returnToEventFeed();
-        } else if(getActivity() instanceof MapActivity){
+        } else if (getActivity() instanceof MapActivity) {
             ((MapActivity) getActivity()).returnToMap();
         }
         requireActivity().getSupportFragmentManager().popBackStack();

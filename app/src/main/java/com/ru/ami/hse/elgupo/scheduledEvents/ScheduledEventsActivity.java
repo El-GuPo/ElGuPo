@@ -105,9 +105,7 @@ public class ScheduledEventsActivity extends AppCompatActivity implements Recycl
     protected void onResume() {
         super.onResume();
         eventsViewModel.loadMyEvents(userId);
-        bottomNavigationView.post(() -> {
-            bottomNavigationView.setSelectedItemId(R.id.button_nav_menu_calendar);
-        });
+        bottomNavigationView.post(() -> bottomNavigationView.setSelectedItemId(R.id.button_nav_menu_calendar));
     }
 
     @Override
