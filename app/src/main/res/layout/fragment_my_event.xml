@@ -1,14 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".scheduledEvents.fragment.MyEventFragment">
+    android:background="@color/white"
+    android:padding="16dp">
 
-    <!-- TODO: Update blank fragment layout -->
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_back"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        app:icon="@drawable/baseline_arrow_back_24"
+        app:iconTint="@color/black"
+        app:iconSize="24dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription="@string/buttonBack_description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/myEventImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:background="@color/grey_200"
+        android:maxHeight="400dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_default_image"
+        android:contentDescription="@string/imageEvent_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_back" />
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/event_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/event_name"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/myEventImage" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/event_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/category_bg"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="4dp"
+        android:text="@string/Category"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/event_name"
+        app:layout_constraintTop_toBottomOf="@id/event_name" />
+
+    <LinearLayout
+        android:id="@+id/dates_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="@id/event_name"
+        app:layout_constraintStart_toStartOf="@id/event_name"
+        app:layout_constraintTop_toBottomOf="@id/event_category">
+
+        <TextView
+            android:id="@+id/event_start_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/event_end_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/locations_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/locations_title"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dates_container" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/locations_recycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/buttons_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/locations_title"
+        tools:listitem="@layout/item_location" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/buttons_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/locations_recycler">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_attend"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_attend"
+            android:textColor="@color/white"
+            app:cornerRadius="8dp"
+            app:iconPadding="0dp"
+            app:layout_constraintTop_toTopOf="@id/buttons_container"
+            app:layout_constraintBottom_toBottomOf="@id/buttons_container"
+            app:layout_constraintEnd_toStartOf="@id/btn_tinder"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_tinder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_tinder"
+            android:lines="1"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:cornerRadius="8dp"
+            app:iconPadding="0dp"
+            app:layout_constraintEnd_toStartOf="@id/btn_match"
+            app:layout_constraintStart_toEndOf="@id/btn_attend"
+            app:layout_constraintTop_toTopOf="@id/buttons_container"
+            app:layout_constraintBottom_toBottomOf="@id/buttons_container"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_match"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_match"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:backgroundTint="@color/green_700"
+            app:cornerRadius="8dp"
+            app:iconPadding="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_tinder"
+            app:layout_constraintTop_toTopOf="@id/buttons_container"
+            app:layout_constraintBottom_toBottomOf="@id/buttons_container" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

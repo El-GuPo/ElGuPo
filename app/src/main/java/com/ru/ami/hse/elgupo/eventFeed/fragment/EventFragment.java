@@ -108,6 +108,12 @@ public class EventFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        eventLikeViewModel.checkIsEventLiked(userId, event.getId().longValue());
+    }
+
     private void setUpTextViews(TextView eventName, TextView eventCategory, TextView eventStartDate, TextView eventEndDate) {
         eventName.setText(event.getName());
         eventCategory.setText(Category.getCategoryById(event.getCatId()).getTitle());
