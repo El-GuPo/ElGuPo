@@ -32,6 +32,8 @@ import com.ru.ami.hse.elgupo.serverrequests.eventsLike.models.LikeEventRequest;
 
 public class EventFragment extends Fragment {
 
+    private final String EVENT_PARAM = "event";
+    private final String USER_ID_PARAM = "userId";
     private String TAG = "EventFragment";
     private Event event;
     private Long userId;
@@ -48,8 +50,8 @@ public class EventFragment extends Fragment {
         eventLikeViewModel = new ViewModelProvider(this).get(EventLikeViewModel.class);
 
         if (getArguments() != null) {
-            event = getArguments().getParcelable("event");
-            userId = getArguments().getLong("userId");
+            event = getArguments().getParcelable(EVENT_PARAM);
+            userId = getArguments().getLong(USER_ID_PARAM);
         } else {
             Log.e(TAG, "Error in initializing in onCreate");
         }
@@ -160,7 +162,6 @@ public class EventFragment extends Fragment {
 
     private void unregisterForEvent(Event event) {
         eventLikeViewModel.likeEvent(new LikeEventRequest(event.getId().longValue(), userId, event.getCatId().longValue(), isAttending));
-        Snackbar.make(requireView(), "Вы отменили регистрацию на событие: " + event.getName(), Snackbar.LENGTH_LONG).show();
     }
 
     private void registerForEvent(Event event) {
@@ -168,7 +169,7 @@ public class EventFragment extends Fragment {
             Вызываем функции нужные для обработки регистарции на событие
          */
         eventLikeViewModel.likeEvent(new LikeEventRequest(event.getId().longValue(), userId, event.getCatId().longValue(), isAttending));
-        Snackbar.make(requireView(), "Вы зарегистрированы на событие: " + event.getName(), Snackbar.LENGTH_LONG).show();
+
     }
 
 }

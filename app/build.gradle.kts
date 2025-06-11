@@ -48,6 +48,9 @@ android {
 }
 
 dependencies {
+    implementation(libs.legacy.support.v4)
+    implementation(libs.lifecycle.livedata.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
     val lifecycle_version = "2.8.7"
 
     implementation(libs.appcompat)
