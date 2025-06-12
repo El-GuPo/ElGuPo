@@ -249,7 +249,7 @@ public class MapActivity extends AppCompatActivity {
         args.putParcelable("event", event);
         args.putLong("userId", userId);
 
-        findViewById(R.id.fragment_container_map).setVisibility(View.VISIBLE);
+        findViewById(R.id.fragment_container).setVisibility(View.VISIBLE);
         findViewById(R.id.statusBarSpacer).setVisibility(View.VISIBLE);
         findViewById(R.id.btnMyLocation).setVisibility(View.GONE);
         findViewById(R.id.mapview).setVisibility(View.GONE);
@@ -259,7 +259,7 @@ public class MapActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.slide_in_right,
                         R.anim.slide_out_left)
-                .replace(R.id.fragment_container_map, eventFragment)
+                .replace(R.id.fragment_container, eventFragment)
                 .addToBackStack("event_detail")
                 .commit();
     }
@@ -272,7 +272,7 @@ public class MapActivity extends AppCompatActivity {
     }
 
     public void returnToMap() {
-        findViewById(R.id.fragment_container_map).setVisibility(View.GONE);
+        findViewById(R.id.fragment_container).setVisibility(View.GONE);
         findViewById(R.id.statusBarSpacer).setVisibility(View.GONE);
         findViewById(R.id.btnMyLocation).setVisibility(View.VISIBLE);
         findViewById(R.id.mapview).setVisibility(View.VISIBLE);

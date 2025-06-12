@@ -116,21 +116,21 @@ public class ScheduledEventsActivity extends AppCompatActivity implements Recycl
         args.putLong("userId", userId);
 
         findViewById(R.id.scheduledEventsActivity_recyclerView).setVisibility(View.GONE);
-        findViewById(R.id.scheduled_fragment_container).setVisibility(View.VISIBLE);
+        findViewById(R.id.fragment_container).setVisibility(View.VISIBLE);
 
         MyEventFragment myEventFragment = new MyEventFragment();
         myEventFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.slide_in_right,
                         R.anim.slide_out_left)
-                .replace(R.id.scheduled_fragment_container, myEventFragment)
+                .replace(R.id.fragment_container, myEventFragment)
                 .addToBackStack("event_detail")
                 .commit();
     }
 
     public void returnToScheduledEventsActivity() {
         findViewById(R.id.scheduledEventsActivity_recyclerView).setVisibility(View.VISIBLE);
-        findViewById(R.id.scheduled_fragment_container).setVisibility(View.GONE);
+        findViewById(R.id.fragment_container).setVisibility(View.GONE);
         eventsViewModel.loadMyEvents(userId);
     }
 }

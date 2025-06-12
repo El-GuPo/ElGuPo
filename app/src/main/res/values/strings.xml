@@ -34,4 +34,7 @@
     <string name="prefer_not_to_say">Не указано</string>
     <string name="btn_delete_photo">Удалить фото</string>
     <string name="btn_match">Мэтч</string>
+    <string name="btn_approve">Заинтересован</string>
+    <string name="btn_reject">Не интересует</string>
+    <string name="description">Описание (макс. 500 символов)</string>
 </resources>

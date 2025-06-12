@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -28,6 +29,8 @@ import com.ru.ami.hse.elgupo.eventFeed.viewModel.EventLikeViewModel;
 import com.ru.ami.hse.elgupo.map.utils.DateUtils;
 import com.ru.ami.hse.elgupo.scheduledEvents.ScheduledEventsActivity;
 import com.ru.ami.hse.elgupo.serverrequests.eventsLike.models.LikeEventRequest;
+import com.ru.ami.hse.elgupo.tinder.fragment.TinderFragment;
+import com.ru.ami.hse.elgupo.tinder.viewModel.TinderCandidatesViewModel;
 
 public class MyEventFragment extends Fragment {
 
@@ -37,6 +40,7 @@ public class MyEventFragment extends Fragment {
     private Event event;
     private Long userId;
     private EventLikeViewModel eventLikeViewModel;
+    private TinderCandidatesViewModel tinderCandidatesViewModel;
     private boolean isAttending = true;
 
     public MyEventFragment() {
@@ -47,6 +51,7 @@ public class MyEventFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         eventLikeViewModel = new ViewModelProvider(this).get(EventLikeViewModel.class);
+        tinderCandidatesViewModel = new ViewModelProvider(this).get(TinderCandidatesViewModel.class);
 
         if (getArguments() != null) {
             event = getArguments().getParcelable(EVENT_PARAM);
@@ -55,7 +60,7 @@ public class MyEventFragment extends Fragment {
             Log.e(TAG, "Error in initializing in onCreate");
         }
 
-
+        tinderCandidatesViewModel.loadCandidates(userId, event.getId().longValue(), null, null, null);
     }
 
     @Override
@@ -140,8 +145,11 @@ public class MyEventFragment extends Fragment {
     private void setUpButtonObservers(MaterialButton btnAttend, MaterialButton btnTinder, MaterialButton btnBack, MaterialButton btnMatch) throws NullPointerException {
         btnBack.setOnClickListener(v -> handleBackPressed());
         btnTinder.setOnClickListener(v -> {
-            // Логика фрагментов тиндера
-//            requireActivity().getSupportFragmentManager().popBackStack();
+            if (tinderCandidatesViewModel.getUserList().getValue() == null || tinderCandidatesViewModel.getUserList().getValue().isEmpty()) {
+                Toast.makeText(requireContext(), "Нет пользователей, идущих на это событие", Toast.LENGTH_SHORT).show();
+            } else {
+                openTinderFragment();
+            }
         });
 
         btnAttend.setOnClickListener(v -> {
@@ -179,10 +187,20 @@ public class MyEventFragment extends Fragment {
     }
 
     private void registerForEvent(Event event) {
-        /*
-            Вызываем функции нужные для обработки регистарции на событие
-         */
         eventLikeViewModel.likeEvent(new LikeEventRequest(event.getId().longValue(), userId, event.getCatId().longValue(), isAttending));
+    }
 
+    private void openTinderFragment() {
+        TinderFragment tinderFragment = new TinderFragment();
+        Bundle args = new Bundle();
+
+        args.putLong(USER_ID_PARAM, userId);
+        args.putParcelable(EVENT_PARAM, event);
+        tinderFragment.setArguments(args);
+
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, tinderFragment)
+                .addToBackStack("tinder")
+                .commit();
     }
 }

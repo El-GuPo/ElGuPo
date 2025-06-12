@@ -51,7 +51,8 @@ public class TinderServerRequester {
                 if(response.isSuccessful()){
                     callback.onSuccess(response.body());
                 } else {
-                    Log.e("TinderServerRequester error getCandidates", response.message());
+                    String errorMsg = "Server error: " + response.code() + " - " + response.message();
+                    Log.e("TinderServerRequester error getCandidates", errorMsg);
                 }
             }
 

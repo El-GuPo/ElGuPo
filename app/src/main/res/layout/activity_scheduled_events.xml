@@ -28,7 +28,7 @@
         tools:listitem="@layout/event_item_popup_layout" />
 
     <FrameLayout
-        android:id="@+id/scheduled_fragment_container"
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:visibility="gone"
