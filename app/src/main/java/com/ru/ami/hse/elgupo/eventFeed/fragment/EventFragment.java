@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -30,6 +31,8 @@ import com.ru.ami.hse.elgupo.eventFeed.viewModel.EventLikeViewModel;
 import com.ru.ami.hse.elgupo.map.MapActivity;
 import com.ru.ami.hse.elgupo.map.utils.DateUtils;
 import com.ru.ami.hse.elgupo.serverrequests.eventsLike.models.LikeEventRequest;
+import com.ru.ami.hse.elgupo.tinder.fragment.TinderFragment;
+import com.ru.ami.hse.elgupo.tinder.viewModel.TinderCandidatesViewModel;
 
 public class EventFragment extends Fragment {
 
@@ -39,6 +42,7 @@ public class EventFragment extends Fragment {
     private Event event;
     private Long userId;
     private EventLikeViewModel eventLikeViewModel;
+    private TinderCandidatesViewModel tinderCandidatesViewModel;
     private boolean isAttending;
 
     public EventFragment() {
@@ -49,6 +53,7 @@ public class EventFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         eventLikeViewModel = new ViewModelProvider(this).get(EventLikeViewModel.class);
+        tinderCandidatesViewModel = new ViewModelProvider(requireActivity()).get(TinderCandidatesViewModel.class);
 
         if (getArguments() != null) {
             event = getArguments().getParcelable(EVENT_PARAM);
@@ -58,6 +63,7 @@ public class EventFragment extends Fragment {
         }
 
         eventLikeViewModel.checkIsEventLiked(userId, event.getId().longValue());
+        tinderCandidatesViewModel.loadCandidates(userId, event.getId().longValue(), null, null, null);
 
     }
 
@@ -113,12 +119,12 @@ public class EventFragment extends Fragment {
     public void onResume() {
         super.onResume();
         eventLikeViewModel.checkIsEventLiked(userId, event.getId().longValue());
+        tinderCandidatesViewModel.loadCandidates(userId, event.getId().longValue(), null, null, null);
     }
 
     private void setUpTextViews(TextView eventName, TextView eventCategory, TextView eventStartDate, TextView eventEndDate) {
         eventName.setText(event.getName());
-        Log.w("CATEGORY", event.getCatId().toString());
-        Log.w("CATEGORY", Category.getCategoryById(event.getCatId()).getTitle());
+
         eventCategory.setText(Category.getCategoryById(event.getCatId()).getTitle());
 
         int colorResId = CategoryUtils.categoryColor(Category.getCategoryById(event.getCatId()));
@@ -139,8 +145,11 @@ public class EventFragment extends Fragment {
     private void setUpButtonObservers(MaterialButton btnAttend, MaterialButton btnTinder, MaterialButton btnBack) throws NullPointerException {
         btnBack.setOnClickListener(v -> handleBackPressed());
         btnTinder.setOnClickListener(v -> {
-            // Логика фрагментов тиндера
-//            requireActivity().getSupportFragmentManager().popBackStack();
+            if (tinderCandidatesViewModel.getUserList().getValue() == null || tinderCandidatesViewModel.getUserList().getValue().isEmpty()) {
+                Toast.makeText(requireContext(), "Нет пользователей для оценки", Toast.LENGTH_SHORT).show();
+            } else {
+                openTinderFragment();
+            }
         });
 
         btnAttend.setOnClickListener(v -> {
@@ -178,11 +187,22 @@ public class EventFragment extends Fragment {
     }
 
     private void registerForEvent(Event event) {
-        /*
-            Вызываем функции нужные для обработки регистарции на событие
-         */
         eventLikeViewModel.likeEvent(new LikeEventRequest(event.getId().longValue(), userId, event.getCatId().longValue(), isAttending));
 
+    }
+
+    private void openTinderFragment() {
+        TinderFragment tinderFragment = new TinderFragment();
+        Bundle args = new Bundle();
+
+        args.putLong(USER_ID_PARAM, userId);
+        args.putParcelable(EVENT_PARAM, event);
+        tinderFragment.setArguments(args);
+
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, tinderFragment)
+                .addToBackStack("tinder")
+                .commit();
     }
 
 }

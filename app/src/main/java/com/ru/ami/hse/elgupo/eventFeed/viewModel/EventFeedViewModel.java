@@ -22,6 +22,7 @@ import lombok.Getter;
 
 public class EventFeedViewModel extends AndroidViewModel {
 
+    private final String TAG = "EventFeedViewModel";
     private final EventFeedRepository eventsRepository;
     @Getter
     private final MutableLiveData<Map<Integer, List<Event>>> eventsByCategory = new MutableLiveData<>();
@@ -44,12 +45,12 @@ public class EventFeedViewModel extends AndroidViewModel {
                         .collect(Collectors.groupingBy(Event::getCatId));
                 allEvents.postValue(new ArrayList<>(uniqueEvents));
                 eventsByCategory.postValue(uniqueData);
-                Log.w("Events amount", " " + uniqueEvents.size());
+                Log.w(TAG, " " + uniqueEvents.size());
             }
 
             @Override
             public void onError(Throwable t) {
-                Log.e("EventsFeedViewModel loadEventsByCategory error", t.getMessage());
+                Log.e(TAG, t.getMessage());
             }
         });
     }
