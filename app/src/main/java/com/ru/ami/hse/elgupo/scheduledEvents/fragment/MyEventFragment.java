@@ -173,6 +173,10 @@ public class MyEventFragment extends Fragment {
                 btnMatch.setVisibility(View.GONE);
             }
         });
+
+        btnMatch.setOnClickListener(v -> {
+            openMatchFragment();
+        });
     }
 
     private void handleBackPressed() {
@@ -188,6 +192,20 @@ public class MyEventFragment extends Fragment {
 
     private void registerForEvent(Event event) {
         eventLikeViewModel.likeEvent(new LikeEventRequest(event.getId().longValue(), userId, event.getCatId().longValue(), isAttending));
+    }
+
+    private void openMatchFragment() {
+        MatchesFragment matchesFragment = new MatchesFragment();
+        Bundle args = new Bundle();
+
+        args.putLong(USER_ID_PARAM, userId);
+        args.putParcelable(EVENT_PARAM, event);
+        matchesFragment.setArguments(args);
+
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, matchesFragment)
+                .addToBackStack("tinder")
+                .commit();
     }
 
     private void openTinderFragment() {

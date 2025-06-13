@@ -37,4 +37,5 @@
     <string name="btn_approve">Заинтересован</string>
     <string name="btn_reject">Не интересует</string>
     <string name="description">Описание (макс. 500 символов)</string>
+    <string name="user_photo_desc">Фото пользователя</string>
 </resources>

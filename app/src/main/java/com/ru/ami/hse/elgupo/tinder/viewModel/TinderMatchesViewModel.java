@@ -34,6 +34,7 @@ public class TinderMatchesViewModel extends AndroidViewModel {
             public void onSuccess(List<User> response) {
                 if (response != null) {
                     userList.postValue(response);
+                    Log.e(TAG, "size:" + response.size());
                 } else {
                     Log.e(TAG, "response is null");
                 }
