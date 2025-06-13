@@ -21,9 +21,9 @@ import java.util.List;
 
 public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.PersonViewHolder> {
 
-    private List<User> userList;
     private final PhotoViewModel photoViewModel;
     private final LifecycleOwner lifecycleOwner;
+    private List<User> userList;
 
     public PersonAdapter(List<User> userList, PhotoViewModel photoViewModel, LifecycleOwner lifecycleOwner) {
         this.userList = userList;
@@ -55,11 +55,11 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.PersonView
                         Glide.with(context)
                                 .load(resource.data.toString())
                                 .circleCrop()
-                                .placeholder(R.drawable.ic_default_image)
-                                .error(R.drawable.ic_default_image)
+                                .placeholder(R.drawable.user)
+                                .error(R.drawable.user)
                                 .into(holder.userPhoto);
                     } else if (resource.status == Resource.Status.ERROR) {
-                        holder.userPhoto.setImageResource(R.drawable.ic_default_image);
+                        holder.userPhoto.setImageResource(R.drawable.user);
                     }
                 });
     }

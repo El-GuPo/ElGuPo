@@ -54,7 +54,7 @@ public class MyEventFragment extends Fragment {
 
         eventLikeViewModel = new ViewModelProvider(this).get(EventLikeViewModel.class);
         tinderCandidatesViewModel = new ViewModelProvider(this).get(TinderCandidatesViewModel.class);
-        tinderMatchesViewModel = new ViewModelProvider(this).get(TinderMatchesViewModel.class);
+        tinderMatchesViewModel = new ViewModelProvider(requireActivity()).get(TinderMatchesViewModel.class);
 
         if (getArguments() != null) {
             event = getArguments().getParcelable(EVENT_PARAM);
