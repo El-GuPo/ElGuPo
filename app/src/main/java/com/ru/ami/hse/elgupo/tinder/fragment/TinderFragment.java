@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
@@ -178,6 +179,14 @@ public class TinderFragment extends Fragment {
 
     private void sendDecisionToServer(boolean isApproved) {
         tinderLikeViewModel.likeUser(new LikeUserRequest(userId, user.getId().longValue(), event.getId().longValue(), isApproved));
+        tinderLikeViewModel.getIsMatch().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if(aBoolean){
+                    Toast.makeText(requireContext(), "Взаимный мэтч!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void returnToEventFragment() {
