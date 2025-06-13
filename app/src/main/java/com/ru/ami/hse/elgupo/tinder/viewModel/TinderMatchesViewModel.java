@@ -12,6 +12,7 @@ import com.ru.ami.hse.elgupo.tinder.repository.TinderCallback;
 import com.ru.ami.hse.elgupo.tinder.repository.TinderMatchesRepository;
 import com.ru.ami.hse.elgupo.tinder.repository.TinderMatchesRepositoryImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
@@ -34,7 +35,6 @@ public class TinderMatchesViewModel extends AndroidViewModel {
             public void onSuccess(List<User> response) {
                 if (response != null) {
                     userList.postValue(response);
-                    Log.e(TAG, "size:" + response.size());
                 } else {
                     Log.e(TAG, "response is null");
                 }

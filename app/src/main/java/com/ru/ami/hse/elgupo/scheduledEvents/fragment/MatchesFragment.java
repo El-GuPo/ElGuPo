@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.ru.ami.hse.elgupo.R;
-import com.ru.ami.hse.elgupo.dataclasses.Event;
 import com.ru.ami.hse.elgupo.profile.photo.PhotoViewModel;
 import com.ru.ami.hse.elgupo.scheduledEvents.adapter.PersonAdapter;
 import com.ru.ami.hse.elgupo.tinder.viewModel.TinderMatchesViewModel;
@@ -25,8 +24,6 @@ public class MatchesFragment extends Fragment {
     private final String EVENT_PARAM = "event";
     private final String USER_ID_PARAM = "userId";
     private final String TAG = "MatchesFragment";
-    private Event event;
-    private Long userId;
     private TinderMatchesViewModel tinderMatchesViewModel;
     private PhotoViewModel photoViewModel;
     private RecyclerView recyclerView;
@@ -38,23 +35,16 @@ public class MatchesFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.w(TAG, "OnCreate");
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            event = getArguments().getParcelable(EVENT_PARAM);
-            userId = getArguments().getLong(USER_ID_PARAM);
-        } else {
-            Log.e(TAG, "Error in initializing in onCreate");
-        }
-
-        tinderMatchesViewModel = new ViewModelProvider(this).get(TinderMatchesViewModel.class);
+        tinderMatchesViewModel = new ViewModelProvider(requireActivity()).get(TinderMatchesViewModel.class);
         photoViewModel = new ViewModelProvider(this).get(PhotoViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_matches_layout, container, false);
         MaterialButton btnBack = view.findViewById(R.id.btn_back);
         setUpListeners(btnBack);
@@ -66,9 +56,8 @@ public class MatchesFragment extends Fragment {
         recyclerView.setAdapter(personAdapter);
 
         tinderMatchesViewModel.getUserList().observe(
-                getViewLifecycleOwner(),
+                requireActivity(),
                 users -> personAdapter.updateUserList(users));
-        tinderMatchesViewModel.loadMatches(userId, event.getId().longValue());
         return view;
     }
 
