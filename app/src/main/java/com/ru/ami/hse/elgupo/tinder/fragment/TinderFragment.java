@@ -36,7 +36,7 @@ public class TinderFragment extends Fragment {
     private TinderLikeViewModel tinderLikeViewModel;
     private TinderCandidatesViewModel tinderCandidatesViewModel;
     private PhotoViewModel photoViewModel;
-    private TextView userFirstName, userLastName, userAge, userDescription, userTg;
+    private TextView userFirstName, userLastName, userAge, userDescription;
     private ImageView userImagePhoto;
     private MaterialButton toggleMale, toggleFemale, toggleNotSpecified;
 
@@ -75,7 +75,6 @@ public class TinderFragment extends Fragment {
         userLastName = view.findViewById(R.id.lastName);
         userAge = view.findViewById(R.id.age);
         userDescription = view.findViewById(R.id.description);
-        userTg = view.findViewById(R.id.telegram);
 
         userImagePhoto = view.findViewById(R.id.profile_image);
         userImagePhoto.setClipToOutline(true);
@@ -101,16 +100,15 @@ public class TinderFragment extends Fragment {
 
     private void updateUserData() {
         setUpPhoto(userImagePhoto);
-        setUpTextView(userFirstName, userLastName, userAge, userDescription, userTg);
+        setUpTextView(userFirstName, userLastName, userAge, userDescription);
         setUpSex();
     }
 
-    private void setUpTextView(TextView userFirstName, TextView userLastName, TextView userAge, TextView userDescription, TextView userTg) {
+    private void setUpTextView(TextView userFirstName, TextView userLastName, TextView userAge, TextView userDescription) {
         userFirstName.setText(user.getName());
         userLastName.setText(user.getSurname());
         userAge.setText(user.getAge().toString());
         userDescription.setText(user.getDescription());
-        userTg.setText(user.getTelegramTag());
     }
 
     private void setUpPhoto(ImageView userImage) {
@@ -132,7 +130,7 @@ public class TinderFragment extends Fragment {
 
     private void setUpSex() {
         setDefaultColors();
-        switch (user.getSex()){
+        switch (user.getSex()) {
             case "MAN":
                 toggleMale.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 toggleMale.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.blue_500));
@@ -148,13 +146,13 @@ public class TinderFragment extends Fragment {
         }
     }
 
-    private void setDefaultColors(){
+    private void setDefaultColors() {
         toggleMale.setTextColor(ContextCompat.getColor(getContext(), R.color.blue_500));
         toggleMale.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.blue_100));
         toggleFemale.setTextColor(ContextCompat.getColor(getContext(), R.color.pink_500));
         toggleFemale.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.pink_100));
-        toggleNotSpecified.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
-        toggleNotSpecified.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey_400));
+        toggleNotSpecified.setTextColor(ContextCompat.getColor(getContext(), R.color.grey_400));
+        toggleNotSpecified.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.grey_100));
     }
 
     private void handleDecision(boolean isApproved) {
@@ -182,7 +180,7 @@ public class TinderFragment extends Fragment {
         tinderLikeViewModel.getIsMatch().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                if(aBoolean){
+                if (aBoolean) {
                     Toast.makeText(requireContext(), "Взаимный мэтч!", Toast.LENGTH_SHORT).show();
                 }
             }

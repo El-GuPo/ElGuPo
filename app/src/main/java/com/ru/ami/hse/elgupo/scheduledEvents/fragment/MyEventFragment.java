@@ -31,6 +31,7 @@ import com.ru.ami.hse.elgupo.scheduledEvents.ScheduledEventsActivity;
 import com.ru.ami.hse.elgupo.serverrequests.eventsLike.models.LikeEventRequest;
 import com.ru.ami.hse.elgupo.tinder.fragment.TinderFragment;
 import com.ru.ami.hse.elgupo.tinder.viewModel.TinderCandidatesViewModel;
+import com.ru.ami.hse.elgupo.tinder.viewModel.TinderMatchesViewModel;
 
 public class MyEventFragment extends Fragment {
 
@@ -41,6 +42,7 @@ public class MyEventFragment extends Fragment {
     private Long userId;
     private EventLikeViewModel eventLikeViewModel;
     private TinderCandidatesViewModel tinderCandidatesViewModel;
+    private TinderMatchesViewModel tinderMatchesViewModel;
     private boolean isAttending = true;
 
     public MyEventFragment() {
@@ -52,6 +54,7 @@ public class MyEventFragment extends Fragment {
 
         eventLikeViewModel = new ViewModelProvider(this).get(EventLikeViewModel.class);
         tinderCandidatesViewModel = new ViewModelProvider(this).get(TinderCandidatesViewModel.class);
+        tinderMatchesViewModel = new ViewModelProvider(this).get(TinderMatchesViewModel.class);
 
         if (getArguments() != null) {
             event = getArguments().getParcelable(EVENT_PARAM);
@@ -61,6 +64,7 @@ public class MyEventFragment extends Fragment {
         }
 
         tinderCandidatesViewModel.loadCandidates(userId, event.getId().longValue(), null, null, null);
+        tinderMatchesViewModel.loadMatches(userId, event.getId().longValue());
     }
 
     @Override
@@ -175,7 +179,11 @@ public class MyEventFragment extends Fragment {
         });
 
         btnMatch.setOnClickListener(v -> {
-            openMatchFragment();
+            if (tinderMatchesViewModel.getUserList().getValue() == null || tinderMatchesViewModel.getUserList().getValue().isEmpty()) {
+                Toast.makeText(requireContext(), "Нет взаимных мэтчей на это событие", Toast.LENGTH_SHORT).show();
+            } else {
+                openMatchFragment();
+            }
         });
     }
 
