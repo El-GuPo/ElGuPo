@@ -37,8 +37,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:textSize="18sp"
             android:textColor="@android:color/black"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/photoContainer"
             app:layout_constraintTop_toTopOf="@id/photoContainer"
@@ -48,15 +48,26 @@
             android:id="@+id/userTg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            android:textSize="14sp"
+            android:layout_marginEnd="32dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@android:color/darker_gray"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/photoContainer"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/imageView4"
             app:layout_constraintTop_toBottomOf="@id/userNameAndLastName"
             tools:text="@string/profile_activity_tg" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="20dp"
+            android:layout_height="19dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toEndOf="@+id/photoContainer"
+            app:layout_constraintTop_toBottomOf="@+id/userNameAndLastName"
+            app:srcCompat="@drawable/telegram" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
