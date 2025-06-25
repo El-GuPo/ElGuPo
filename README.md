@@ -30,4 +30,4 @@ YANDEX_MAPS_API_KEY = # Your Yandex Maps API key
 
 ## Links
 
-- **MapKit SDK** [Yandex map Api](https://yandex.ru/maps-api/products/mapkit)
+- **MapKit SDK** [Yandex Map API](https://yandex.ru/maps-api/products/mapkit)
