@@ -46,7 +46,6 @@ public class TinderFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.w(TAG, "onCreate");
         super.onCreate(savedInstanceState);
 
         tinderCandidatesViewModel = new ViewModelProvider(requireActivity()).get(TinderCandidatesViewModel.class);
@@ -157,10 +156,9 @@ public class TinderFragment extends Fragment {
 
     private void handleDecision(boolean isApproved) {
         if (user == null) {
-            Log.w(TAG, "handleDesicionCalled user null");
+            Log.e(TAG, "handleDesicionCalled user is null");
             return;
         }
-        Log.w(TAG, "handleDesicionCalled");
         sendDecisionToServer(isApproved);
         if (tinderCandidatesViewModel.hasMoreUsers()) {
             tinderCandidatesViewModel.nextUser();

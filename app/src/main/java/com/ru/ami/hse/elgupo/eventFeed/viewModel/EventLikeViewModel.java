@@ -26,11 +26,11 @@ public class EventLikeViewModel extends AndroidViewModel {
         this.eventLikeRepository = new EventLikeRepositoryImpl();
     }
 
-    public void likeEvent(LikeEventRequest likeEventRequest){
+    public void likeEvent(LikeEventRequest likeEventRequest) {
         eventLikeRepository.likeEvent(likeEventRequest, new EventLikeRepository.EventsLikeCallback<LikeEventResponse>() {
             @Override
             public void onSuccess(LikeEventResponse request) {
-                if(!request.getStatus().equals("OK")){
+                if (!request.getStatus().equals("OK")) {
                     Log.e(TAG, "Error like event, but onSuccess");
                 }
             }
@@ -42,12 +42,11 @@ public class EventLikeViewModel extends AndroidViewModel {
         });
     }
 
-    public void checkIsEventLiked(Long userId, Long eventId){
+    public void checkIsEventLiked(Long userId, Long eventId) {
         eventLikeRepository.isEventLiked(userId, eventId, new EventLikeRepository.EventsLikeCallback<Boolean>() {
             @Override
             public void onSuccess(Boolean request) {
                 isEventLiked.postValue(request);
-                Log.w(TAG, "onSuccess");
             }
 
             @Override

@@ -47,7 +47,6 @@ public class UserDataViewModel extends AndroidViewModel {
             @Override
             public void onSuccess(GetProfileInfoResponse request) {
                 userData.postValue(request);
-                Log.w(TAG, "Successfully loaded data");
             }
 
             @Override

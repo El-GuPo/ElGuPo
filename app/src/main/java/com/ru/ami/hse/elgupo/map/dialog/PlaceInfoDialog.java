@@ -20,8 +20,8 @@ import java.util.List;
 
 public class PlaceInfoDialog extends Dialog implements RecyclerViewInterface {
     private final Place place;
-    private EventsAdapter adapter;
     private final MapActivity activity;
+    private EventsAdapter adapter;
 
     public PlaceInfoDialog(@NonNull Context context, Place place, MapActivity activity) {
         super(context, R.style.RoundedDialogTheme);

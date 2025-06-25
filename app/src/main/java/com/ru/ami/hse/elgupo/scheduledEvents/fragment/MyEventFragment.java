@@ -60,7 +60,7 @@ public class MyEventFragment extends Fragment {
             event = getArguments().getParcelable(EVENT_PARAM);
             userId = getArguments().getLong(USER_ID_PARAM);
         } else {
-            Log.e(TAG, "Error in initializing in onCreate");
+            Log.e(TAG, "Error in importing userId or event");
         }
 
         tinderCandidatesViewModel.loadCandidates(userId, event.getId().longValue(), null, null, null);

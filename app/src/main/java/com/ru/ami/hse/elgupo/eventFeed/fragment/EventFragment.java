@@ -62,7 +62,6 @@ public class EventFragment extends Fragment {
             Log.e(TAG, "Error in initializing in onCreate");
         }
 
-        Log.w(TAG, "EventId:"  + event.getId());
         eventLikeViewModel.checkIsEventLiked(userId, event.getId().longValue());
         tinderCandidatesViewModel.loadCandidates(userId, event.getId().longValue(), null, null, null);
 
@@ -189,7 +188,6 @@ public class EventFragment extends Fragment {
 
     private void registerForEvent(Event event) {
         eventLikeViewModel.likeEvent(new LikeEventRequest(event.getId().longValue(), userId, event.getCatId().longValue(), isAttending));
-
     }
 
     private void openTinderFragment() {

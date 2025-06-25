@@ -247,7 +247,6 @@ public class ProfileActivity extends AppCompatActivity {
         if (!surname.equals(etLastName.getText().toString())) {
             isDataSaved = false;
             surname = etLastName.getText().toString();
-            Log.w("Profile Activity", surname);
         }
         try {
             String s = etAge.getText().toString();

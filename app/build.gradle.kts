@@ -62,12 +62,6 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-
-    testImplementation("org.mockito:mockito-inline:5.2.0")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("org.mockito:mockito-android:5.18.0")
-    androidTestImplementation("androidx.arch.core:core-testing:2.1.0")
-
     implementation ("com.yandex.android:maps.mobile:4.5.0-full")
 
     implementation("androidx.mediarouter:mediarouter:1.7.0")
@@ -90,8 +84,6 @@ dependencies {
 
     implementation ("com.github.bumptech.glide:glide:4.14.2")
     annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
-
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
 
     //Navigation
     implementation("androidx.navigation:navigation-fragment:2.7.7")

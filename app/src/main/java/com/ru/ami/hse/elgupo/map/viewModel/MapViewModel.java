@@ -3,21 +3,21 @@ package com.ru.ami.hse.elgupo.map.viewModel;
 import android.app.Application;
 import android.util.Log;
 
-import com.ru.ami.hse.elgupo.dataclasses.Place;
-import com.ru.ami.hse.elgupo.map.repository.PlacesRepository;
-import com.ru.ami.hse.elgupo.map.repository.PlacesRepositoryImpl;
-import com.ru.ami.hse.elgupo.serverrequests.events.ServerRequester;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import com.ru.ami.hse.elgupo.dataclasses.Place;
+import com.ru.ami.hse.elgupo.map.repository.PlacesRepository;
+import com.ru.ami.hse.elgupo.map.repository.PlacesRepositoryImpl;
 
 import java.util.List;
 
 public class MapViewModel extends AndroidViewModel {
     private final PlacesRepository repository;
     private final MutableLiveData<List<Place>> places = new MutableLiveData<>();
+    private final String TAG = "MapViewModel";
 
     public MapViewModel(
             @NonNull Application application
@@ -31,12 +31,11 @@ public class MapViewModel extends AndroidViewModel {
             @Override
             public void onSuccess(List<Place> placesList) {
                 places.postValue(placesList);
-                Log.w("Events size", "Size: " + placesList.size());
             }
 
             @Override
             public void onError(Throwable t) {
-                Log.e("MapViewModel", "Error loading places", t);
+                Log.e(TAG, "Error loading places", t);
             }
         });
     }

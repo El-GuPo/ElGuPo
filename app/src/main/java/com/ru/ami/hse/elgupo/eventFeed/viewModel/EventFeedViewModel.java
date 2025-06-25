@@ -45,7 +45,6 @@ public class EventFeedViewModel extends AndroidViewModel {
                         .collect(Collectors.groupingBy(Event::getCatId));
                 allEvents.postValue(new ArrayList<>(uniqueEvents));
                 eventsByCategory.postValue(uniqueData);
-                Log.w(TAG, " " + uniqueEvents.size());
             }
 
             @Override

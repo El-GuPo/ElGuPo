@@ -79,7 +79,7 @@ public class EventFeedActivity extends AppCompatActivity implements RecyclerView
             adapter = new EventsAdapter(this);
             recyclerView.setAdapter(adapter);
         } catch (Exception e) {
-            Log.w("Error setting recyclerView eventsFeed", e.getMessage());
+            Log.e("Error setting recyclerView eventsFeed", e.getMessage());
         }
     }
 

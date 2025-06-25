@@ -1,7 +1,6 @@
 package com.ru.ami.hse.elgupo.scheduledEvents.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +34,6 @@ public class MatchesFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.w(TAG, "OnCreate");
         super.onCreate(savedInstanceState);
 
         tinderMatchesViewModel = new ViewModelProvider(requireActivity()).get(TinderMatchesViewModel.class);

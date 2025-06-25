@@ -42,7 +42,6 @@ public class TinderCandidatesViewModel extends AndroidViewModel {
                     userList.postValue(response);
                     currentUserIndex = 0;
                     currentUser.postValue(loadedUsers.get(currentUserIndex));
-                    Log.w(TAG, "Size:" + response.size());
                 } else {
                     currentUser.postValue(null);
                     Log.w(TAG, "response is null");

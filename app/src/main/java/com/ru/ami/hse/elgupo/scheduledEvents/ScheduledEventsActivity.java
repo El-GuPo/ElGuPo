@@ -3,7 +3,6 @@ package com.ru.ami.hse.elgupo.scheduledEvents;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -35,10 +34,8 @@ public class ScheduledEventsActivity extends AppCompatActivity implements Recycl
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.w(TAG, "onCreated");
         SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
         userId = prefs.getLong("userId", -1L);
-        Log.w(TAG, "userId: " + userId);
 
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -58,13 +55,11 @@ public class ScheduledEventsActivity extends AppCompatActivity implements Recycl
     }
 
     private void setupViewModel() {
-        Log.w(TAG, "setupViewModel");
         eventsViewModel = new ViewModelProvider(this).get(MyEventsViewModel.class);
         eventsViewModel.loadMyEvents(userId);
     }
 
     private void setUpObservers() {
-        Log.w(TAG, "setUpObservers");
         eventsViewModel.getMyEventsList().observe(this, myEvents -> {
             if (myEvents == null) {
                 myEvents = new ArrayList<>();

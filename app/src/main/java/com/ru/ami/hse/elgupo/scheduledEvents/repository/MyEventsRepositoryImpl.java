@@ -22,7 +22,7 @@ public class MyEventsRepositoryImpl implements MyEventsRepository {
             @Override
             public void onError(Throwable t) {
                 myEventCallback.onError(t);
-                Log.w(TAG, "error: " + t.getMessage());
+                Log.e(TAG, t.getMessage());
             }
         });
 

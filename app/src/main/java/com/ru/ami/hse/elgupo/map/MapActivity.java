@@ -61,6 +61,8 @@ public class MapActivity extends AppCompatActivity {
     private Long userId;
     private PlaceInfoDialog currentDialog;
 
+    private final String TAG = "MapActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
@@ -158,7 +160,7 @@ public class MapActivity extends AppCompatActivity {
             try {
                 mapWindow.enableLocationTracking();
             } catch (Exception e) {
-                Log.e("MapActivity", "Location error: " + e.getMessage());
+                Log.e(TAG, "Location error: " + e.getMessage());
             }
         }
     }

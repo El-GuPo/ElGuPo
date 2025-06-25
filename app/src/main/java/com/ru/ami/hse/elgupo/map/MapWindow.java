@@ -364,8 +364,6 @@ public class MapWindow implements CameraListener {
             @Override
             public void onLocationUpdated(@NonNull Location location) {
                 userLocation = location.getPosition();
-
-                Log.w(TAG, "Location updated: " + userLocation.getLatitude() + "," + userLocation.getLongitude());
             }
 
             @Override
