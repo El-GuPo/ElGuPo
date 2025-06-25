@@ -10,7 +10,7 @@ Android application for finding companions to attend local events together. Feat
 
 ## Links
 You can see back-end of application at:
-- **Backend Server**: [EventCompanionServer](https://github.com/El-GuPo/ElGuPoServer)
+- **Backend Server**: [ElGuPoServer](https://github.com/El-GuPo/ElGuPoServer)
 ## Dependencies
 - **Android SDK 26+**
 - **Yandex Maps SDK**
@@ -27,3 +27,7 @@ sdk.dir =             # Path to your Android SDK directory
 YANDEX_MAPS_API_KEY = # Your Yandex Maps API key
 ```
 2. **Run application at emulator or at your device**
+
+## Links
+
+- **MapKit SDK** [Yandex map Api](https://yandex.ru/maps-api/products/mapkit)
